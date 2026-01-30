@@ -271,9 +271,7 @@ public class GetTicket extends javax.swing.JInternalFrame {
             
             
             
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(GetTicket.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(GetTicket.class.getName()).log(Level.SEVERE, null, ex);
         }
         
