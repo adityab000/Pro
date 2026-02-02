@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -468,19 +469,26 @@ public class Ticket extends javax.swing.JFrame {
 
             String Arrival = arrival2.getSelectedItem().toString();
             String Departure = departure2.getSelectedItem().toString();
+            String Status ="Scheduled";
 
             Connection con;
             PreparedStatement pre;
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-            pre = con.prepareStatement("select * from flight where Arrival=? and Departure=?");
+            pre = con.prepareStatement("select * from flight where Arrival=? and Departure=? and Status=? ");
             pre.setString(1,Arrival);
             pre.setString(2,Departure);
+            pre.setString(3,Status);
 
             ResultSet rs = pre.executeQuery();
             ResultSetMetaData RSMD = rs.getMetaData();
             int cc = RSMD.getColumnCount();
-            DefaultTableModel DFT = (DefaultTableModel) table.getModel();
+            TableModel model = table.getModel();
+            if (!(model instanceof DefaultTableModel)) {
+                JOptionPane.showMessageDialog(this, "Table model is not a DefaultTableModel. Cannot update table.");
+                return;
+            }
+            DefaultTableModel DFT = (DefaultTableModel) model;
             while(rs.next())
             {
                 Vector v = new Vector();
