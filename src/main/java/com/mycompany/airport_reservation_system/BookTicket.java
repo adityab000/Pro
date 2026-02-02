@@ -455,7 +455,7 @@ public class BookTicket extends javax.swing.JInternalFrame {
             ResultSet rs = pre.executeQuery();       
             ResultSetMetaData RSMD = rs.getMetaData();
             int cc = RSMD.getColumnCount();
-             TableModel model = table.getModel();
+            TableModel model = table.getModel();
             if (!(model instanceof DefaultTableModel)) {
                 JOptionPane.showMessageDialog(this, "Table model is not a DefaultTableModel. Cannot update table.");
                 return;
