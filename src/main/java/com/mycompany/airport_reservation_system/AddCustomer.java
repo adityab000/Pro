@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
 
 
@@ -30,6 +31,9 @@ public class AddCustomer extends javax.swing.JInternalFrame {
         initComponents();
         this.getContentPane().setBackground(blue);
         AutoID();
+        ButtonGroup genderGroup = new ButtonGroup();
+        genderGroup.add(male);
+        genderGroup.add(female);
     }
     
     public void AutoID()
