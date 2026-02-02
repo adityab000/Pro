@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -438,34 +439,49 @@ public class BookTicket extends javax.swing.JInternalFrame {
             
             String Arrival = arrival.getSelectedItem().toString();
             String Departure = departure.getSelectedItem().toString();
-            
-            
+            String Status ="Scheduled";
+            String query ="select FlightID, FlightName, Arrival, Departure, Duration, Date from flight "
+                    + "where Arrival=? and Departure=? and Status=?";
+                      
             Connection con;
             PreparedStatement pre;
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-            pre = con.prepareStatement("select * from flight where Arrival=? and Departure=?");
+            pre = con.prepareStatement(query);
             pre.setString(1,Arrival);
             pre.setString(2,Departure);
-            
-            ResultSet rs = pre.executeQuery();
+            pre.setString(3,Status);
+           
+            ResultSet rs = pre.executeQuery();       
             ResultSetMetaData RSMD = rs.getMetaData();
             int cc = RSMD.getColumnCount();
-            DefaultTableModel DFT = (DefaultTableModel) table.getModel();
+             TableModel model = table.getModel();
+            if (!(model instanceof DefaultTableModel)) {
+                JOptionPane.showMessageDialog(this, "Table model is not a DefaultTableModel. Cannot update table.");
+                return;
+            }
+            DefaultTableModel DFT = (DefaultTableModel) model;
+            DFT.setRowCount(0);
+
+            
             while(rs.next())
             {
-                Vector v = new Vector();
-                for(int i=1;i<=cc;i++)
-                {
+                  Vector v = new Vector();
+//                Vector v = new Vector();
+                
+               
                     v.add(rs.getString("FlightID"));
                     v.add(rs.getString("FlightName"));
                     v.add(rs.getString("Arrival"));
                     v.add(rs.getString("Departure"));
                     v.add(rs.getString("Duration"));
                     v.add(rs.getString("Date"));
-                }
+                    
+                    
+                    DFT.addRow(v);
                 
-                DFT.addRow(v);
+                
+                
          
             }
                
