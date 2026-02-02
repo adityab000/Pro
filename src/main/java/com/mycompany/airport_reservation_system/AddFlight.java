@@ -51,9 +51,7 @@ public class AddFlight extends javax.swing.JInternalFrame {
                 flightid.setText("FL"+String.format("%03d",id));
             }
             
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AddCustomer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AddCustomer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -359,6 +357,7 @@ public class AddFlight extends javax.swing.JInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             // TODO add your handling code here:
+            String Status ="Scheduled";
             String FlightID = flightid.getText();
             String FlightName = flightName.getText();
             String Arrival = arrival.getText();
@@ -377,7 +376,7 @@ public class AddFlight extends javax.swing.JInternalFrame {
             PreparedStatement pre;
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-            pre = con.prepareStatement("insert into Flight(FlightID,FlightName,Arrival,Departure,Duration,Seats,Fare,Date)values(?,?,?,?,?,?,?,?)");
+            pre = con.prepareStatement("insert into Flight(FlightID,FlightName,Arrival,Departure,Duration,Seats,Fare,Date,Status)values(?,?,?,?,?,?,?,?,?)");
             pre.setString(1,FlightID);
             pre.setString(2,FlightName);
             pre.setString(3,Arrival);
@@ -386,6 +385,7 @@ public class AddFlight extends javax.swing.JInternalFrame {
             pre.setString(6,Seat);
             pre.setString(7,Fare);
             pre.setString(8,Date);
+            pre.setString(9,Status);
             
             pre.executeUpdate();
             JOptionPane.showMessageDialog(null, "Flight Added Successfully");
