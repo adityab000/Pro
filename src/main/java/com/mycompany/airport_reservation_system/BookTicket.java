@@ -441,7 +441,7 @@ public class BookTicket extends javax.swing.JInternalFrame {
             String Departure = departure.getSelectedItem().toString();
             String Status ="Scheduled";
             String query ="select FlightID, FlightName, Arrival, Departure, Duration, Date from flight "
-                    + "where Arrival=? and Departure=? and Status=?";
+                    + "where Arrival=? and Departure=? and Status=? and Date >= CURDATE() ";
                       
             Connection con;
             PreparedStatement pre;
@@ -468,8 +468,7 @@ public class BookTicket extends javax.swing.JInternalFrame {
             {
                   Vector v = new Vector();
 //                Vector v = new Vector();
-                
-               
+          
                     v.add(rs.getString("FlightID"));
                     v.add(rs.getString("FlightName"));
                     v.add(rs.getString("Arrival"));
@@ -477,12 +476,7 @@ public class BookTicket extends javax.swing.JInternalFrame {
                     v.add(rs.getString("Duration"));
                     v.add(rs.getString("Date"));
                     
-                    
                     DFT.addRow(v);
-                
-                
-                
-         
             }
                
             
@@ -536,15 +530,14 @@ public class BookTicket extends javax.swing.JInternalFrame {
             
             
             
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AddCustomer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AddCustomer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
+        
+        
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void departureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_departureActionPerformed
@@ -602,12 +595,13 @@ public class BookTicket extends javax.swing.JInternalFrame {
             String Arrival = arrival.getSelectedItem().toString();
             String Departure = departure.getSelectedItem().toString();
             String TicketID = ID.getText();
+            String Status = "Booked";
             
             Connection con;
             PreparedStatement pre;
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-            pre = con.prepareStatement("insert into ticket(TicketID,FlightID,CustomerID,Arrival,Departure,FirstName,LastName,Contact,Gender)values(?,?,?,?,?,?,?,?,?)");
+            pre = con.prepareStatement("insert into ticket(TicketID,FlightID,CustomerID,Arrival,Departure,FirstName,LastName,Contact,Gender,Status)values(?,?,?,?,?,?,?,?,?,?)");
             pre.setString(1,TicketID);
             pre.setString(2,flightID);
             pre.setString(3,CustomerID);
@@ -617,6 +611,7 @@ public class BookTicket extends javax.swing.JInternalFrame {
             pre.setString(7,LastName);
             pre.setString(8,Contact);
             pre.setString(9,Gender);
+            pre.setString(10,Status);
             
             pre.executeUpdate();
             

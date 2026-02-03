@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
 
 /**
@@ -26,6 +27,9 @@ public class SearchCustomer extends javax.swing.JInternalFrame {
     public SearchCustomer() {
         initComponents();
         this.getContentPane().setBackground(blue);
+        ButtonGroup genderGroup = new ButtonGroup();
+        genderGroup.add(male);
+        genderGroup.add(female);
     }
 
     /**

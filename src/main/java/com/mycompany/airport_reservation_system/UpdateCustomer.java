@@ -13,6 +13,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
 
 /**
@@ -26,6 +27,9 @@ public class UpdateCustomer extends javax.swing.JInternalFrame {
      */
     public UpdateCustomer() {
         initComponents();
+            ButtonGroup genderGroup = new ButtonGroup();
+            genderGroup.add(male);
+            genderGroup.add(female);
     }
 
     /**
@@ -331,6 +335,9 @@ public class UpdateCustomer extends javax.swing.JInternalFrame {
             String NationalID = nationalid.getText();
             String Address = address.getText();
             String Contact = contact.getText();
+            
+
+
             String Gender =male.isSelected() ? "male" : "female";
 //            if(male.isSelected())
 //            {

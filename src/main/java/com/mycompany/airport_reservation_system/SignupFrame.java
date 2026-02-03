@@ -215,6 +215,7 @@ public class SignupFrame extends javax.swing.JFrame {
 
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(LoginFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog( this,"This username is already taken ");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

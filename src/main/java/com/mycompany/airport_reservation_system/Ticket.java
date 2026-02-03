@@ -27,13 +27,47 @@ public class Ticket extends javax.swing.JFrame {
     /**
      * Creates new form Ticket
      */
-    public Ticket() {
+    public Ticket(String Customerid) {
         initComponents();
+        custid.setText(Customerid);
         this.getContentPane().setBackground(blue);
         AutoID();
+        AutoDetails();
     }
     
     String flightID;
+    
+    
+    
+    private void AutoDetails(){
+        try {
+            // TODO add your handling code here:
+            String Customer = custid.getText();
+
+            Connection con;
+            PreparedStatement pre;
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
+            pre = con.prepareStatement("select * from customer where CustomerID=?");
+            pre.setString(1,Customer);
+            ResultSet rs = pre.executeQuery();
+
+            if(rs.next() != false)
+            {
+                firstName.setText(rs.getString("FirstName"));
+                lastName.setText(rs.getString("LastName"));
+                contact.setText(rs.getString("contact"));
+                gender.setText(rs.getString("Gender"));
+
+            }else{
+                JOptionPane.showMessageDialog(null, "Customer does not exist");
+            }
+
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(AddCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
     
     private void AutoID()
      {
@@ -100,7 +134,6 @@ public class Ticket extends javax.swing.JFrame {
         totalTickets = new javax.swing.JTextField();
         Ans = new javax.swing.JTextField();
         jTextField9 = new javax.swing.JTextField();
-        jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
@@ -266,13 +299,6 @@ public class Ticket extends javax.swing.JFrame {
             }
         });
 
-        jButton5.setText("Search");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
         jButton6.setText("Calcute Fare");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -324,9 +350,7 @@ public class Ticket extends javax.swing.JFrame {
                     .addComponent(custid)
                     .addComponent(jTextField9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton6, javax.swing.GroupLayout.Alignment.TRAILING)))
+                .addComponent(jButton6))
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton7)
@@ -337,11 +361,9 @@ public class Ticket extends javax.swing.JFrame {
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(7, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel12)
-                        .addComponent(jButton5))
+                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(custid, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -475,7 +497,7 @@ public class Ticket extends javax.swing.JFrame {
             PreparedStatement pre;
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-            pre = con.prepareStatement("select * from flight where Arrival=? and Departure=? and Status=? ");
+            pre = con.prepareStatement("select * from flight where Arrival=? and Departure=? and Status=? and Date >= CURDATE() ");
             pre.setString(1,Arrival);
             pre.setString(2,Departure);
             pre.setString(3,Status);
@@ -489,18 +511,19 @@ public class Ticket extends javax.swing.JFrame {
                 return;
             }
             DefaultTableModel DFT = (DefaultTableModel) model;
+            DFT.setRowCount(0);
             while(rs.next())
             {
                 Vector v = new Vector();
-                for(int i=1;i<=cc;i++)
-                {
+//                for(int i=1;i<=cc;i++)
+//                {
                     v.add(rs.getString("FlightID"));
                     v.add(rs.getString("FlightName"));
                     v.add(rs.getString("Arrival"));
                     v.add(rs.getString("Departure"));
                     v.add(rs.getString("Duration"));
                     v.add(rs.getString("Date"));
-                }
+//                }
 
                 DFT.addRow(v);
 
@@ -523,36 +546,6 @@ public class Ticket extends javax.swing.JFrame {
     private void contactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contactActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_contactActionPerformed
-
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-        try {
-            // TODO add your handling code here:
-            String Customer = custid.getText();
-
-            Connection con;
-            PreparedStatement pre;
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-            pre = con.prepareStatement("select * from customer where CustomerID=?");
-            pre.setString(1,Customer);
-            ResultSet rs = pre.executeQuery();
-
-            if(rs.next() != false)
-            {
-                firstName.setText(rs.getString("FirstName"));
-                lastName.setText(rs.getString("LastName"));
-                contact.setText(rs.getString("contact"));
-                gender.setText(rs.getString("Gender"));
-
-            }else{
-                JOptionPane.showMessageDialog(null, "Customer does not exist");
-            }
-
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(AddCustomer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
@@ -577,12 +570,13 @@ public class Ticket extends javax.swing.JFrame {
             String Arrival = arrival2.getSelectedItem().toString();
             String Departure = departure2.getSelectedItem().toString();
             String TicketID = ID.getText();
+            String Status = "Booked";
 
             Connection con;
             PreparedStatement pre;
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-            pre = con.prepareStatement("insert into ticket(TicketID,FlightID,CustomerID,Arrival,Departure,FirstName,LastName,Contact,Gender)values(?,?,?,?,?,?,?,?,?)");
+            pre = con.prepareStatement("insert into ticket(TicketID,FlightID,CustomerID,Arrival,Departure,FirstName,LastName,Contact,Gender,Status)values(?,?,?,?,?,?,?,?,?,?)");
             pre.setString(1,TicketID);
             pre.setString(2,flightID);
             pre.setString(3,CustomerID);
@@ -592,13 +586,14 @@ public class Ticket extends javax.swing.JFrame {
             pre.setString(7,LastName);
             pre.setString(8,Contact);
             pre.setString(9,Gender);
+            pre.setString(10,Status);
 
             int row = pre.executeUpdate();
             
             if(row>0){
-                JOptionPane.showMessageDialog(this,"Ticket Generated Succesfully" + TicketID);
+                JOptionPane.showMessageDialog(null, "Ticket Has Been Genertated Successfully");
                 this.dispose();
-//                new Nticket().setVisible(true);
+                new Nticket(TicketID).setVisible(true);
             }
 
             
@@ -643,7 +638,7 @@ public class Ticket extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Ticket().setVisible(true);
+                new Ticket("CS001").setVisible(true);
             }
         });
     }
@@ -651,25 +646,17 @@ public class Ticket extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Ans;
     private javax.swing.JLabel ID;
-    private javax.swing.JComboBox<String> arrival;
-    private javax.swing.JComboBox<String> arrival1;
     private javax.swing.JComboBox<String> arrival2;
     private javax.swing.JTextField contact;
     private javax.swing.JTextField custid;
-    private javax.swing.JComboBox<String> departure;
-    private javax.swing.JComboBox<String> departure1;
     private javax.swing.JComboBox<String> departure2;
     private javax.swing.JTextField fare;
     private javax.swing.JTextField firstName;
     private javax.swing.JTextField gender;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -680,17 +667,10 @@ public class Ticket extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;

@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
 
 
@@ -31,6 +32,9 @@ public class Customer extends javax.swing.JFrame {
     public Customer() {
         initComponents();
         AutoID();
+        ButtonGroup genderGroup = new ButtonGroup();
+            genderGroup.add(male);
+            genderGroup.add(female);
     }
     
     public void AutoID()
@@ -413,7 +417,8 @@ public class Customer extends javax.swing.JFrame {
             if(row>0){
                 JOptionPane.showMessageDialog(this,"Customer Added Succesfully");
                 this.dispose();
-                new Ticket().setVisible(true);
+               Ticket ticket = new Ticket(Customerid);
+               ticket.setVisible(true);
             }
 
         } catch (ClassNotFoundException | SQLException ex) {
