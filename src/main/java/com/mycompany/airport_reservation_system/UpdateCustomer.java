@@ -327,17 +327,13 @@ public class UpdateCustomer extends javax.swing.JInternalFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        try {
-            String Customerid = custID.getText();
-            String FirstName = firstname.getText();
-            String LastName = lastname.getText();
-            String Passport = passport.getText();
-            String NationalID = nationalid.getText();
-            String Address = address.getText();
-            String Contact = contact.getText();
-            
-
-
+        String Customerid = custID.getText().trim();
+            String FirstName = firstname.getText().trim();
+            String LastName = lastname.getText().trim();
+            String Passport = passport.getText().trim();
+            String NationalID = nationalid.getText().trim();
+            String Address = address.getText().trim();
+            String Contact = contact.getText().trim();                        
             String Gender =male.isSelected() ? "male" : "female";
 //            if(male.isSelected())
 //            {
@@ -346,26 +342,96 @@ public class UpdateCustomer extends javax.swing.JInternalFrame {
 //            {
 //                Gender = "female";
 //            }
-            DateFormat da = new SimpleDateFormat("yyyy-MM-dd");
-            String Date = da.format(date.getDate());
+        java.util.Date SelectedDate = date.getDate();
+        
+        java.util.List<String> errors = new java.util.ArrayList<>();
+
+            // First Name: Required, alphabetic, max 10 chars
+            if (FirstName.isEmpty()) {
+                errors.add("First Name is required.");
+            } else if (!FirstName.matches("[a-zA-Z\\s]+") || FirstName.length() > 10) {
+                errors.add("First Name must be alphabetic and up to 10 characters.");
+            }
+
+            // Last Name: Same as first name
+            if (LastName.isEmpty()) {
+                errors.add("Last Name is required.");
+            } else if (!LastName.matches("[a-zA-Z\\s]+") || LastName.length() > 10) {
+                errors.add("Last Name must be alphabetic and up to 10 characters.");
+            }
+
+           // Passport: Required, alphanumeric, max 5 chars
+            if (Passport.isEmpty()) {
+                errors.add("Passport is required.");
+            } else if (!Passport.matches("[a-zA-Z0-9]+") || Passport.length() > 5) {
+                errors.add("Passport must be alphanumeric and up to 5 characters.");
+            }
+
+            // National ID: Required, alphanumeric, max 5 chars
+            if (NationalID.isEmpty()) {
+                 errors.add("National ID is required.");
+            } else if (!NationalID.matches("[a-zA-Z0-9]+") || NationalID.length() > 5) {
+                errors.add("National ID must be alphanumeric and up to 5 characters.");
+            }
+
+                // Address: Required, max 100 chars
+            if (Address.isEmpty()) {
+                errors.add("Address is required.");
+            } else if (Address.length() > 100) {
+                errors.add("Address must be up to 100 characters.");
+            }
+
+            // Contact: Required, numeric, 10 digits
+            if (Contact.isEmpty()) {
+                 errors.add("Contact is required.");
+            } else if (!Contact.matches("\\d+") || Contact.length() == 9) {
+                errors.add("Contact must be numeric and 10 digits.");
+            }
+
+            // Gender: Must select one
+            if (Gender.isEmpty()) {
+                errors.add("Gender must be selected.");
+            }
+
+            // Date of Birth: Required, not null, not in future
+            if (SelectedDate == null) {
+                errors.add("Date of Birth is required.");
+            } else {
+                java.util.Calendar today = java.util.Calendar.getInstance();
+                java.util.Calendar dob = java.util.Calendar.getInstance();
+                dob.setTime(SelectedDate);
+                if (dob.after(today)) {
+                    errors.add("Date of Birth cannot be in the future.");
+                }
+                //check date of customer
+                int age = today.get(java.util.Calendar.YEAR) - dob.get(java.util.Calendar.YEAR);
+                if (dob.get(java.util.Calendar.DAY_OF_YEAR) > today.get(java.util.Calendar.DAY_OF_YEAR)) {
+                    age--;  // Adjust if birthday hasn't passed this year
+                }
+                if (age < 18) {
+                    errors.add("Must be at least 18 years old.");
+                }
+            }
             
-            String query = ""
-                    + "UPDATE customer "
-                    + "SET FirstName = ?, "
-                    + " LastName = ?, "
-                    + "Passport = ? ,"
-                    + "NationalID = ?, "
-                    + "Address = ?, "
-                    + "Contact = ?, "
-                    + "Gender = ?, "
-                    + "DOB = ? "
-                    + "WHERE CustomerID = ?";
             
-            Connection con;
-            PreparedStatement pre;
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-            pre = con.prepareStatement(query);
+
+            // If errors exist, show them and stop
+            if (!errors.isEmpty()) {
+                String errorMessage = "Please fix the following errors:\n" + String.join("\n", errors);
+                JOptionPane.showMessageDialog(this, errorMessage, "Validation Error", JOptionPane.ERROR_MESSAGE);
+                return;  // Exit without inserting
+            }
+        
+        DateFormat da = new SimpleDateFormat("yyyy-MM-dd");
+        String Date = da.format(date.getDate());
+        try( Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
+     PreparedStatement pre = con.prepareStatement(
+         "UPDATE customer SET FirstName = ?, LastName = ?, Passport = ?, " +
+         "NationalID = ?, Address = ?, Contact = ?, Gender = ?, DOB = ? " +
+         "WHERE CustomerID = ?")) {
+            
+            
+      
             
             pre.setString(1,FirstName);
             pre.setString(2,LastName);
@@ -387,8 +453,9 @@ public class UpdateCustomer extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(this, "Customer Information Is Not Updated!");
             }
 
-        } catch (ClassNotFoundException | SQLException ex) {
+        } catch ( SQLException ex) {
             Logger.getLogger(DeleteAdmin.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Database error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

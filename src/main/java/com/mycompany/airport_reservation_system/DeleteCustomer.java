@@ -4,6 +4,8 @@
  */
 package com.mycompany.airport_reservation_system;
 
+import java.awt.Graphics;
+import java.awt.Image;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,7 +25,23 @@ public class DeleteCustomer extends javax.swing.JInternalFrame {
     /**
      * Creates new form DeleteCustomer
      */
+    class BackgroundPanel extends javax.swing.JPanel {
+        public Image backgroundImage;
+
+        public BackgroundPanel() {
+            backgroundImage = new ImageIcon(
+                    "C:\\Users\\ADITYA\\OneDrive\\Desktop\\images\\delete.jpg"
+            ).getImage();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
     public DeleteCustomer() {
+        setContentPane(new DeleteCustomer.BackgroundPanel());
         initComponents();
     }
 
@@ -60,15 +79,17 @@ public class DeleteCustomer extends javax.swing.JInternalFrame {
         date = new javax.swing.JTextField();
         gender = new javax.swing.JTextField();
 
+        setClosable(true);
+
         jLabel1.setFont(new java.awt.Font("Leelawadee UI", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Customer Info Delete Panal");
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 204));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel1.setOpaque(false);
 
         jLabel2.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Customer ID");
 
         custID.addActionListener(new java.awt.event.ActionListener() {
@@ -78,23 +99,18 @@ public class DeleteCustomer extends javax.swing.JInternalFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("First Name");
 
         jLabel4.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Last Name");
 
         jLabel5.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Passport No.");
 
         jLabel6.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("National ID");
 
         jLabel7.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Address");
 
         firstname.addActionListener(new java.awt.event.ActionListener() {
@@ -199,9 +215,9 @@ public class DeleteCustomer extends javax.swing.JInternalFrame {
 
         jPanel2.setBackground(new java.awt.Color(0, 51, 204));
         jPanel2.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel2.setOpaque(false);
 
         jLabel8.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Contact");
 
         contact.addActionListener(new java.awt.event.ActionListener() {
@@ -211,11 +227,9 @@ public class DeleteCustomer extends javax.swing.JInternalFrame {
         });
 
         jLabel9.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Gender");
 
         jLabel11.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Date of Birth");
 
         date.addActionListener(new java.awt.event.ActionListener() {
@@ -327,7 +341,7 @@ public class DeleteCustomer extends javax.swing.JInternalFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         try {
-            String ID = custID.getText();
+            String ID = custID.getText().trim();
             Connection con;
             PreparedStatement pre;
             Class.forName("com.mysql.jdbc.Driver");

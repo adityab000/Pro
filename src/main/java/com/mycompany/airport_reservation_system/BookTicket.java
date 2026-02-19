@@ -5,6 +5,8 @@
 package com.mycompany.airport_reservation_system;
 
 import static java.awt.Color.blue;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,6 +16,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -23,11 +26,28 @@ import javax.swing.table.TableModel;
  * @author ADITYA
  */
 public class BookTicket extends javax.swing.JInternalFrame {
+    
+    class BackgroundPanel extends javax.swing.JPanel {
+        public Image backgroundImage;
+
+        public BackgroundPanel() {
+            backgroundImage = new ImageIcon(
+                    "C:\\Users\\ADITYA\\OneDrive\\Desktop\\images\\booking.jpg"
+            ).getImage();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
 
     /**
      * Creates new form BookTicket
      */
     public BookTicket() {
+        setContentPane(new BookTicket.BackgroundPanel());
         initComponents();
         this.getContentPane().setBackground(blue);
         AutoID();
@@ -36,12 +56,9 @@ public class BookTicket extends javax.swing.JInternalFrame {
     
     private void AutoID()
      {
-        try {
-            Connection con;
-            PreparedStatement pre;
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-            pre = con.prepareStatement("Select Max(TicketID) from ticket");
+        try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
+            PreparedStatement pre = con.prepareStatement("Select MAX(TicketID) from ticket");) {
+               
             ResultSet rs = pre.executeQuery();
             rs.next();
             if(rs.getString("MAX(TicketID)")==null)
@@ -49,15 +66,18 @@ public class BookTicket extends javax.swing.JInternalFrame {
                 ID.setText("TK001");
             }else
             {
-                long id=Long.parseLong(rs.getString("MAX(TicketID)").substring(2,rs.getString("MAx(TicketID)").length()));
-                id++;
-                ID.setText("TK"+String.format("%03d",id));
+                String maxId = rs.getString("MAX(TicketID)");
+                if (maxId.length() < 5 || !maxId.startsWith("TK")) {
+                    ID.setText("TK001"); // Fallback for invalid format
+                } else {
+                    int id = Integer.parseInt(maxId.substring(2)) + 1;
+                    ID.setText("TK" + String.format("%03d", id));
+                }
             }
             
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AddCustomer.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(AddCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Error generating Ticket ID. Please try again.");
         }
     }
 
@@ -112,13 +132,12 @@ public class BookTicket extends javax.swing.JInternalFrame {
         setClosable(true);
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 204));
+        jPanel1.setOpaque(false);
 
         jLabel1.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Arrival");
 
         jLabel2.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Departure");
 
         jLabel3.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
@@ -208,48 +227,39 @@ public class BookTicket extends javax.swing.JInternalFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Book the dream flight ticket for you");
 
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Ticket Id");
 
         ID.setForeground(new java.awt.Color(204, 0, 51));
         ID.setText("ID");
 
         jPanel2.setBackground(new java.awt.Color(0, 0, 204));
+        jPanel2.setOpaque(false);
 
         jLabel7.setFont(new java.awt.Font("Leelawadee UI", 0, 12)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Customer ID");
 
         jLabel8.setFont(new java.awt.Font("Leelawadee UI", 0, 12)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("First Name");
 
         jLabel9.setFont(new java.awt.Font("Leelawadee UI", 0, 12)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Last Name ");
 
         jLabel10.setFont(new java.awt.Font("Leelawadee UI", 0, 12)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Contact");
 
         jLabel11.setFont(new java.awt.Font("Leelawadee UI", 0, 12)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Gender");
 
         jLabel12.setFont(new java.awt.Font("Leelawadee UI", 0, 12)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Fare");
 
         jLabel13.setFont(new java.awt.Font("Leelawadee UI", 0, 12)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("Total Ticket");
 
         jLabel14.setFont(new java.awt.Font("Leelawadee UI", 0, 12)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("Discount");
 
         jLabel15.setFont(new java.awt.Font("Leelawadee UI", 0, 12)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setText(" Total Fare");
 
         firstName.addActionListener(new java.awt.event.ActionListener() {
@@ -434,23 +444,28 @@ public class BookTicket extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try {
-            // TODO add your handling code here:
-            
-            String Arrival = arrival.getSelectedItem().toString();
-            String Departure = departure.getSelectedItem().toString();
-            String Status ="Scheduled";
-            String query ="select FlightID, FlightName, Arrival, Departure, Duration, Date from flight "
+        
+        String Arrival = arrival.getSelectedItem().toString();
+        String Departure = departure.getSelectedItem().toString();
+        if (Arrival.equals(Departure)) {
+            JOptionPane.showMessageDialog(this, "Arrival and Departure cannot be the same.");
+            return;
+        }
+        
+        String query ="select FlightID, FlightName, Arrival, Departure, Duration, Date from flight "
                     + "where Arrival=? and Departure=? and Status=? and Date >= CURDATE() ";
-                      
-            Connection con;
-            PreparedStatement pre;
+        
+        // Validation: Ensure arrival != departure
+        
+        
+        
+        try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
+            PreparedStatement pre = con.prepareStatement(query);) {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-            pre = con.prepareStatement(query);
+            
             pre.setString(1,Arrival);
             pre.setString(2,Departure);
-            pre.setString(3,Status);
+            pre.setString(3,"Scheduled");
            
             ResultSet rs = pre.executeQuery();       
             ResultSetMetaData RSMD = rs.getMetaData();
@@ -463,57 +478,48 @@ public class BookTicket extends javax.swing.JInternalFrame {
             DefaultTableModel DFT = (DefaultTableModel) model;
             DFT.setRowCount(0);
 
-            
+            boolean hasResults = false;
             while(rs.next())
             {
-                  Vector v = new Vector();
-//                Vector v = new Vector();
+                hasResults = true;                              
+                Vector v = new Vector();
           
-                    v.add(rs.getString("FlightID"));
-                    v.add(rs.getString("FlightName"));
-                    v.add(rs.getString("Arrival"));
-                    v.add(rs.getString("Departure"));
-                    v.add(rs.getString("Duration"));
-                    v.add(rs.getString("Date"));
+                v.add(rs.getString("FlightID"));
+                v.add(rs.getString("FlightName"));
+                v.add(rs.getString("Arrival"));
+                v.add(rs.getString("Departure"));
+                v.add(rs.getString("Duration"));
+                v.add(rs.getString("Date"));
                     
                     DFT.addRow(v);
             }
-               
-            
+            if (!hasResults) {
+                JOptionPane.showMessageDialog(this, "No flights found for the selected route.");
+                
+            }
             
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(BookTicket.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Error searching flights. Please try again.");
         }
         
         
         
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void firstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_firstNameActionPerformed
-
-    private void lastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lastNameActionPerformed
-
-    private void contactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contactActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_contactActionPerformed
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        try {
-            // TODO add your handling code here:
-            String Customer = custid.getText();
-            
-            
-            Connection con;
-            PreparedStatement pre;
+        String customerId = custid.getText().trim();
+        if (customerId.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a Customer ID.");
+            return;
+        }
+        try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
+            PreparedStatement pre = con.prepareStatement("select * from customer where CustomerID=?");) {
+            // TODO add your handling code here:  
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-            pre = con.prepareStatement("select * from customer where CustomerID=?");
-            pre.setString(1,Customer);
+            
+            pre.setString(1,customerId);
             ResultSet rs = pre.executeQuery();
             
             if(rs.next() != false)
@@ -526,12 +532,9 @@ public class BookTicket extends javax.swing.JInternalFrame {
             }else{
                 JOptionPane.showMessageDialog(null, "Customer does not exist");
             }
-            
-            
-            
-            
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AddCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Error searching customer. Please try again.");
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -550,79 +553,100 @@ public class BookTicket extends javax.swing.JInternalFrame {
             
             int col = 0;
             int row = table.getSelectedRow();
-            flightID = table.getModel().getValueAt(row, col).toString();
-            Connection con;
-            PreparedStatement pre;
+            if (row < 0) return;
+            flightID = (String) table.getModel().getValueAt(row, 0);
+            try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");          
+            PreparedStatement pre=con.prepareStatement("select fare from flight where FlightID=?");) {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-            
-            pre=con.prepareStatement("select fare from flight where FlightID=?");
             pre.setString(1,flightID);
             
             ResultSet rs = pre.executeQuery();
             
-            rs.next();
+            if (rs.next()) {
+                fare.setText(rs.getString("Fare"));
+            } else {
+                JOptionPane.showMessageDialog(this, "Fare not found for selected flight.");
+            }
+            }
             
-            fare.setText(rs.getString("Fare"));
-            
-        } catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(BookTicket.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(BookTicket.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Error retrieving fare. Please try again.");
         }
     }//GEN-LAST:event_tableMouseClicked
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         
-        int Fare = Integer.parseInt(fare.getText());
-        int NoOfTickets = Integer.parseInt(totalTickets.getText());
+        try {
+            int Fare = Integer.parseInt(fare.getText().trim());
+            int NoOfTickets = Integer.parseInt(totalTickets.getText().trim());
+            
+            if (Fare <= 0 || NoOfTickets <= 0) {
+                JOptionPane.showMessageDialog(this, "Fare and number of tickets must be positive numbers.");
+                return;
+            }
+            int ans = Fare*NoOfTickets;
+            Ans.setText(String.valueOf(ans));
+        }catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Please enter valid numbers for fare and tickets.");
+        }
         
-        int ans = Fare*NoOfTickets;
-        Ans.setText(String.valueOf(ans));
         
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        try {
-            // TODO add your handling code here:
-            String CustomerID = custid.getText();
-            String FirstName = firstName.getText();
-            String LastName = lastName.getText();
-            String Contact = contact.getText();
-            String Gender = gender.getText();
+        AutoID();
+        String customerId = custid.getText().trim();
+        if (custid.getText().trim().isEmpty() || flightID == null || firstName.getText().trim().isEmpty() ||
+            lastName.getText().trim().isEmpty() || contact.getText().trim().isEmpty() || gender.getText().trim().isEmpty() ||
+            fare.getText().trim().isEmpty() || totalTickets.getText().trim().isEmpty() || Ans.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill all required fields and select a flight.");
+            return;
+        }
+        
+        if (!customerId.matches("^[a-zA-Z0-9]{5}$")) {
+        JOptionPane.showMessageDialog(this, "Customer ID must be exactly 5 characters long and contain only letters and numbers (e.g., AB123).");
+        return;
+    }
             
-            String Arrival = arrival.getSelectedItem().toString();
-            String Departure = departure.getSelectedItem().toString();
-            String TicketID = ID.getText();
-            String Status = "Booked";
-            
-            Connection con;
-            PreparedStatement pre;
+        try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
+            PreparedStatement pre = con.prepareStatement("insert into ticket(TicketID,FlightID,CustomerID,Arrival,Departure,FirstName,LastName,Contact,Gender,Status)values(?,?,?,?,?,?,?,?,?,?)");) {
+            // TODO add your handling code here
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-            pre = con.prepareStatement("insert into ticket(TicketID,FlightID,CustomerID,Arrival,Departure,FirstName,LastName,Contact,Gender,Status)values(?,?,?,?,?,?,?,?,?,?)");
-            pre.setString(1,TicketID);
-            pre.setString(2,flightID);
-            pre.setString(3,CustomerID);
-            pre.setString(4,Arrival);
-            pre.setString(5,Departure);
-            pre.setString(6,FirstName);
-            pre.setString(7,LastName);
-            pre.setString(8,Contact);
-            pre.setString(9,Gender);
-            pre.setString(10,Status);
             
+
+            pre.setString(1, ID.getText());
+            pre.setString(2, flightID);
+            pre.setString(3, customerId);
+            pre.setString(4, arrival.getSelectedItem().toString());
+            pre.setString(5, departure.getSelectedItem().toString());
+            pre.setString(6, firstName.getText());
+            pre.setString(7, lastName.getText());
+            pre.setString(8, contact.getText());
+            pre.setString(9, gender.getText());
+            pre.setString(10, "Booked");
             pre.executeUpdate();
             
             JOptionPane.showMessageDialog(null,"Ticket booked sucessfully");
             
             
-        } catch (ClassNotFoundException ex) {
+            custid.setText("");
+            firstName.setText("");
+            lastName.setText("");
+            contact.setText("");
+            gender.setText("");
+            fare.setText("");
+            totalTickets.setText("");
+            Ans.setText("");
+            
+            
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(BookTicket.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(BookTicket.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Error booking ticket. Please try again.");
         }
+        
+       
         
         
         
@@ -633,6 +657,18 @@ public class BookTicket extends javax.swing.JInternalFrame {
     private void arrivalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arrivalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_arrivalActionPerformed
+
+    private void contactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contactActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_contactActionPerformed
+
+    private void lastNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lastNameActionPerformed
+
+    private void firstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_firstNameActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

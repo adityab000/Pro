@@ -4,7 +4,11 @@
  */
 package com.mycompany.airport_reservation_system;
 
-import static java.awt.Color.blue;
+
+
+import java.awt.Graphics;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,45 +16,67 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+
 
 /**
  *
  * @author ADITYA
  */
 public class AddAdmin extends javax.swing.JInternalFrame {
+    
+    class BackgroundPanel extends javax.swing.JPanel {
+        public Image backgroundImage;
 
+        public BackgroundPanel() {
+            backgroundImage = new ImageIcon(
+                    "C:\\Users\\ADITYA\\OneDrive\\Desktop\\images\\a1.jpg"
+            ).getImage();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
     /**
      * Creates new form AddAdmin
      */
     public AddAdmin() {
+
+        setContentPane(new BackgroundPanel());
         initComponents();
-        this.getContentPane().setBackground(blue);
-        AutoID();
+        AutoID();              
     }
     
     private void AutoID()
      {
-        try {
-            Connection con;
-            PreparedStatement pre;
+        try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
+            PreparedStatement pre = con.prepareStatement("Select MAx(ID) from login");) {
+            
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-            pre = con.prepareStatement("Select MAx(ID) from login");
             ResultSet rs = pre.executeQuery();
             rs.next();
-            if(rs.getString("MAX(ID)")==null)
+            String maxId = rs.getString("MAX(ID)");
+            if (maxId == null)
             {
                 Id.setText("ID001");
             }else
             {
-                long id=Long.parseLong(rs.getString("MAX(ID)").substring(2,rs.getString("MAx(ID)").length()));
-                id++;
-                Id.setText("ID"+String.format("%03d",id));
+                if (maxId.length() == 5 && maxId.startsWith("ID")) {
+                    long id = Long.parseLong(maxId.substring(2)) + 1;
+                    Id.setText("ID" + String.format("%03d", id));
+                } else {
+                    // Fallback for invalid format
+                    Id.setText("ID001");
+                }
             }
             
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(AddCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Error generating ID. Please try again.");
         }
     }
 
@@ -83,24 +109,36 @@ public class AddAdmin extends javax.swing.JInternalFrame {
         jLabel1.setText("Welcome to the Admin Panel");
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 204));
+        jPanel1.setOpaque(false);
 
         jLabel2.setFont(new java.awt.Font("Leelawadee UI", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("ID");
+        jLabel2.setDebugGraphicsOptions(javax.swing.DebugGraphics.BUFFERED_OPTION);
+        jLabel2.setOpaque(true);
 
         jLabel3.setFont(new java.awt.Font("Leelawadee UI", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Role");
+        jLabel3.setDebugGraphicsOptions(javax.swing.DebugGraphics.BUFFERED_OPTION);
+        jLabel3.setOpaque(true);
+
+        Id.setDebugGraphicsOptions(javax.swing.DebugGraphics.BUFFERED_OPTION);
 
         jLabel5.setFont(new java.awt.Font("Leelawadee UI", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Username");
+        jLabel5.setDebugGraphicsOptions(javax.swing.DebugGraphics.BUFFERED_OPTION);
+        jLabel5.setOpaque(true);
 
         jLabel6.setFont(new java.awt.Font("Leelawadee UI", 1, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText(" Password");
+        jLabel6.setDebugGraphicsOptions(javax.swing.DebugGraphics.BUFFERED_OPTION);
+        jLabel6.setOpaque(true);
+
+        userName.setDebugGraphicsOptions(javax.swing.DebugGraphics.BUFFERED_OPTION);
+
+        password.setDebugGraphicsOptions(javax.swing.DebugGraphics.BUFFERED_OPTION);
 
         role.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Customer" }));
+        role.setDebugGraphicsOptions(javax.swing.DebugGraphics.BUFFERED_OPTION);
         role.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 roleActionPerformed(evt);
@@ -118,8 +156,8 @@ public class AddAdmin extends javax.swing.JInternalFrame {
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(Id, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
-                    .addComponent(role, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(Id)
+                    .addComponent(role, 0, 76, Short.MAX_VALUE))
                 .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
@@ -168,28 +206,25 @@ public class AddAdmin extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(162, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addGap(79, 79, 79)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(79, 79, 79)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(147, 147, 147)
+                .addComponent(jButton1)
+                .addGap(236, 236, 236)
+                .addComponent(jButton2))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(23, Short.MAX_VALUE)
+                .addGap(37, 37, 37)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addGap(54, 54, 54)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addGap(74, 74, 74)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1)
                     .addComponent(jButton2)))
@@ -203,41 +238,65 @@ public class AddAdmin extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            // TODO add your handling code here:
+        
+        String id = Id.getText().trim();
+        String username = userName.getText().trim();
+        String passwordText = password.getText().trim();
+        String selectedRole = role.getSelectedItem() != null ? role.getSelectedItem().toString() : "";
+        
+        if (id.isEmpty() || username.isEmpty() || passwordText.isEmpty() || selectedRole.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "All fields must be filled.");
+            return;
+        }
+        
+        if (!id.matches("^ID\\d{3}$")) {
+            JOptionPane.showMessageDialog(this, "ID must be in the format 'IDXXX' where XXX are digits (e.g., ID001).");
+            return;
+        }
+        
+        try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
+            PreparedStatement pre = con.prepareStatement("insert into login(ID,Username,Password,Role)values(?,?,?,?)");) {
             
-            String ID = Id.getText();
-//            String FirstName = firstName.getText();
-//            String LastName = lastName.getText();
-            String Role = role.getSelectedItem().toString();
-            String Username = userName.getText();
-            String Password = password.getText();
-            
-            Connection con;
-            PreparedStatement pre;
+
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-            pre = con.prepareStatement("insert into login(ID,Username,Password,Role)values(?,?,?,?)");
             
-            pre.setString(1,ID);
-//            pre.setString(2,FirstName);
-//            pre.setString(3,LastName);
-            pre.setString(2,Username);
-            pre.setString(3,Password);
-            pre.setString(4,Role);
             
-            pre.executeUpdate();
+            pre.setString(1, id);
+            pre.setString(2, username);
+            pre.setString(3, passwordText); 
+            pre.setString(4, selectedRole);
             
-            JOptionPane.showMessageDialog(this,"" + Role + " Added Successfully");
+            int row = pre.executeUpdate();
+            if (row > 0) {
+                JOptionPane.showMessageDialog(this, selectedRole + " added successfully.");
+                
+                
+                Id.setText("");
+                userName.setText("");
+                password.setText("");
+                role.setSelectedIndex(0); 
+                AutoID();  
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to add " + selectedRole + ". Please try again.");
+            }
             
-        } catch (ClassNotFoundException | SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(AddAdmin.class.getName()).log(Level.SEVERE, null, ex);
+            if (ex.getMessage().contains("Duplicate entry")) {
+                JOptionPane.showMessageDialog(this, "Username already exists. Please choose a different one.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Error adding " + selectedRole + ". Please try again.");
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AddAdmin.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Database driver not found.");
         }
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void roleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleActionPerformed
         // TODO add your handling code here:
+         
     }//GEN-LAST:event_roleActionPerformed
 
 

@@ -19,6 +19,13 @@ import javax.swing.JOptionPane;
  * @author ADITYA
  */
 public class Nticket extends javax.swing.JFrame {
+    
+    private static final String STATUS_BOOKED = "Booked";
+    private static final String SUCCESS_MESSAGE = "Ticket Has Been Generated Successfully";
+    private static final String FAILURE_MESSAGE = "Ticket Has Not Been Generated Successfully";
+    private static final String INVALID_ID_MESSAGE = "Please enter a valid Ticket ID.";
+    private static final String ERROR_MESSAGE = "An error occurred while retrieving the ticket. Please try again.";
+    private static final String VERIFICATION_FAILED_MESSAGE = "Ticket verification failed: Invalid or missing data.";
 
     public Nticket(String TicketID) {
         initComponents();
@@ -34,48 +41,66 @@ public class Nticket extends javax.swing.JFrame {
     }
     
     private void AutoDetails(){
+        // TODO add your handling code here:
+        String ticketIdText = ticketId.getText().trim();
+        if (ticketIdText.isEmpty() || !ticketIdText.matches("[A-Za-z0-9]+")) {
+            JOptionPane.showMessageDialog(null, INVALID_ID_MESSAGE);
+            return;
+        }
+        String query = "select ticket.FirstName,ticket.LastName,ticket.Gender,Flight.FlightName,ticket.Arrival,ticket.Departure,ticket.Contact from ticket"
+                + " INNER JOIN flight"
+                + " ON ticket.FlightID = flight.FlightID"
+                + " where ticket.TicketId=? and ticket.Status=? ";
         try {
-            // TODO add your handling code here:
-            String Ticket = ticketId.getText();
-            String Status = "Booked";
-            String query = "select ticket.FirstName,ticket.LastName,ticket.Gender,Flight.FlightName,ticket.Arrival,ticket.Departure,ticket.Contact from ticket"
-                    + " INNER JOIN flight"
-                    + " ON ticket.FlightID = flight.FlightID"
-                    + " where ticket.TicketId=? and ticket.Status=? ";
-
-            Connection con;
-            PreparedStatement pre1;
-
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-
-            pre1 = con.prepareStatement(query);
-
-            pre1.setString(1,Ticket);
-            pre1.setString(2,Status);
-
-            ResultSet rs = pre1.executeQuery();
-
-            if(rs.next() != false)
-            {
-                firstName.setText(rs.getString("FirstName"));
-                lastName.setText(rs.getString("LastName"));
-                gender.setText(rs.getString("Gender"));
-                flightName.setText(rs.getString("FlightName"));
-                arrival.setText(rs.getString("Arrival"));
-                departure.setText(rs.getString("Departure"));
-                contact.setText(rs.getString("Contact"));
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project", "root", "Ab9797@bhoir");
+                    PreparedStatement pre1 = con.prepareStatement(query)) {
                 
-            }
-            
-            else{
-                JOptionPane.showMessageDialog(this, "Ticket Has Not Been Genertated Successfully");
+                pre1.setString(1, ticketIdText);
+                pre1.setString(2, STATUS_BOOKED);
                 
-            }
+                try (ResultSet rs = pre1.executeQuery()) {
+                    if (rs.next()) {
+                        String first = rs.getString("FirstName");
+                        String last = rs.getString("LastName");
+                        String gen = rs.getString("Gender");
+                        String flight = rs.getString("FlightName");
+                        String arr = rs.getString("Arrival");
+                        String dep = rs.getString("Departure");
+                        String cont = rs.getString("Contact");
+                        
+                        if (first == null || last == null || gen == null || flight == null || arr == null || dep == null || cont == null ||
+                                first.trim().isEmpty() || last.trim().isEmpty() || gen.trim().isEmpty() || flight.trim().isEmpty() ||
+                                arr.trim().isEmpty() || dep.trim().isEmpty() || cont.trim().isEmpty()) {
+                            JOptionPane.showMessageDialog(null, VERIFICATION_FAILED_MESSAGE);
+                            return;
+                        }
+                        
+                        firstName.setText(first);
+                        lastName.setText(last);
+                        gender.setText(gen);
+                        flightName.setText(flight);
+                        arrival.setText(arr);
+                        departure.setText(dep);
+                        contact.setText(cont);
+                        JOptionPane.showMessageDialog(null, SUCCESS_MESSAGE);
 
+                    } else {
+                        // Clear labels on failure
+                        firstName.setText("");
+                        lastName.setText("");
+                        gender.setText("");
+                        flightName.setText("");
+                        arrival.setText("");
+                        departure.setText("");
+                        contact.setText("");
+                        JOptionPane.showMessageDialog(null, FAILURE_MESSAGE);
+                    }
+                }
+            }
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(GetTicket.class.getName()).log(Level.SEVERE, null, ex);
-           
+            JOptionPane.showMessageDialog(null, ERROR_MESSAGE);
         }
         
     }

@@ -5,6 +5,8 @@
 package com.mycompany.airport_reservation_system;
 
 import static java.awt.Color.blue;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.logging.Level;
@@ -15,6 +17,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 
@@ -23,11 +26,29 @@ import javax.swing.JOptionPane;
  * @author ADITYA
  */
 public class AddCustomer extends javax.swing.JInternalFrame {
+    
+    
+    class BackgroundPanel extends javax.swing.JPanel {
+        public Image backgroundImage;
+
+        public BackgroundPanel() {
+            backgroundImage = new ImageIcon(
+                    "C:\\Users\\ADITYA\\OneDrive\\Desktop\\images\\customer.jpg"
+            ).getImage();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
 
     /**
      * Creates new form AddCustomer
      */
     public AddCustomer() {
+        setContentPane(new AddCustomer.BackgroundPanel());
         initComponents();
         this.getContentPane().setBackground(blue);
         AutoID();
@@ -127,9 +148,9 @@ public class AddCustomer extends javax.swing.JInternalFrame {
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 204));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel1.setOpaque(false);
 
         jLabel2.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Customer ID");
 
         custID.addActionListener(new java.awt.event.ActionListener() {
@@ -139,23 +160,18 @@ public class AddCustomer extends javax.swing.JInternalFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("First Name");
 
         jLabel4.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Last Name");
 
         jLabel5.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Passport No.");
 
         jLabel6.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("National ID");
 
         jLabel7.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Address");
 
         firstname.addActionListener(new java.awt.event.ActionListener() {
@@ -245,11 +261,13 @@ public class AddCustomer extends javax.swing.JInternalFrame {
 
         jPanel2.setBackground(new java.awt.Color(0, 51, 204));
         jPanel2.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel2.setOpaque(false);
 
         jLabel8.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setForeground(new java.awt.Color(51, 51, 51));
         jLabel8.setText("Contact");
 
+        contact.setForeground(new java.awt.Color(51, 51, 51));
         contact.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 contactActionPerformed(evt);
@@ -257,10 +275,10 @@ public class AddCustomer extends javax.swing.JInternalFrame {
         });
 
         jLabel9.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setForeground(new java.awt.Color(51, 51, 51));
         jLabel9.setText("Gender");
 
-        male.setForeground(new java.awt.Color(255, 255, 255));
+        male.setForeground(new java.awt.Color(51, 51, 51));
         male.setText("Male");
         male.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -268,7 +286,7 @@ public class AddCustomer extends javax.swing.JInternalFrame {
             }
         });
 
-        female.setForeground(new java.awt.Color(255, 255, 255));
+        female.setForeground(new java.awt.Color(51, 51, 51));
         female.setText("Female");
         female.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -277,9 +295,10 @@ public class AddCustomer extends javax.swing.JInternalFrame {
         });
 
         jLabel11.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setForeground(new java.awt.Color(51, 51, 51));
         jLabel11.setText("Date of Birth");
 
+        date.setForeground(new java.awt.Color(51, 51, 51));
         date.setDateFormatString("yyyy-MM-dd");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -421,15 +440,15 @@ public class AddCustomer extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_femaleActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            // TODO add your handling code here:
-            String Customerid = custID.getText();
-            String FirstName = firstname.getText();
-            String LastName = lastname.getText();
-            String Passport = passport.getText();
-            String NationalID = nationalid.getText();
-            String Address = address.getText();
-            String Contact = contact.getText();
+        
+        // TODO add your handling code here:
+            String Customerid = custID.getText().trim();
+            String FirstName = firstname.getText().trim();
+            String LastName = lastname.getText().trim();
+            String Passport = passport.getText().trim();
+            String NationalID = nationalid.getText().trim();
+            String Address = address.getText().trim();
+            String Contact = contact.getText().trim();
             String Gender ="";
             if(male.isSelected())
             {
@@ -438,35 +457,116 @@ public class AddCustomer extends javax.swing.JInternalFrame {
             {
                 Gender = "female";
             }
+            java.util.Date SelectedDate = date.getDate();
+            
+
+//            validation
+            java.util.List<String> errors = new java.util.ArrayList<>();
+
+            
+            if (FirstName.isEmpty()) {
+                errors.add("First Name is required.");
+            } else if (!FirstName.matches("[a-zA-Z\\s]+") || FirstName.length() > 10) {
+                errors.add("First Name must be alphabetic and up to 10 characters.");
+            }
+
+
+            if (LastName.isEmpty()) {
+                errors.add("Last Name is required.");
+            } else if (!LastName.matches("[a-zA-Z\\s]+") || LastName.length() > 10) {
+                errors.add("Last Name must be alphabetic and up to 10 characters.");
+            }
+
+
+            if (Passport.isEmpty()) {
+                errors.add("Passport is required.");
+            } else if (!Passport.matches("[a-zA-Z0-9]+") || Passport.length() > 5) {
+                errors.add("Passport must be alphanumeric and up to 5 characters.");
+            }
+
+
+            if (NationalID.isEmpty()) {
+                 errors.add("National ID is required.");
+            } else if (!NationalID.matches("[a-zA-Z0-9]+") || NationalID.length() > 5) {
+                errors.add("National ID must be alphanumeric and up to 5 characters.");
+            }
+
+
+            if (Address.isEmpty()) {
+                errors.add("Address is required.");
+            } else if (Address.length() > 100) {
+                errors.add("Address must be up to 100 characters.");
+            }
+
+
+            if (Contact.isEmpty()) {
+                 errors.add("Contact is required.");
+            } else if (!Contact.matches("\\d{10}")) {
+                errors.add("Contact must be numeric and 10 digits.");
+            }
+
+            // Gender: Must select one
+            if (Gender.isEmpty()) {
+                errors.add("Gender must be selected.");
+            }
+
+            // Date of Birth: Required, not null, not in future
+            if (SelectedDate == null) {
+                errors.add("Date of Birth is required.");
+            } else {
+                java.util.Calendar today = java.util.Calendar.getInstance();
+                java.util.Calendar dob = java.util.Calendar.getInstance();
+                dob.setTime(SelectedDate);
+                if (dob.after(today)) {
+                    errors.add("Date of Birth cannot be in the future.");
+                }
+                //check date of customer
+                int age = today.get(java.util.Calendar.YEAR) - dob.get(java.util.Calendar.YEAR);
+                if (dob.get(java.util.Calendar.DAY_OF_YEAR) > today.get(java.util.Calendar.DAY_OF_YEAR)) {
+                    age--;  // Adjust if birthday hasn't passed this year
+                }
+                if (age < 18) {
+                    errors.add("Must be at least 18 years old.");
+                }
+            }
+            
+            
+
+            // If errors exist, show them and stop
+            if (!errors.isEmpty()) {
+                String errorMessage = "Please fix the following errors:\n" + String.join("\n", errors);
+                JOptionPane.showMessageDialog(this, errorMessage, "Validation Error", JOptionPane.ERROR_MESSAGE);
+                return;  // Exit without inserting
+            }
+        
             DateFormat da = new SimpleDateFormat("yyyy-MM-dd");
-            String Date = da.format(date.getDate());
-            
-            Connection con;
-            PreparedStatement pre;
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-            pre = con.prepareStatement("insert into customer(CustomerId,FirstName,LastName,Passport,NationalID,Address,Contact,Gender,DOB)values(?,?,?,?,?,?,?,?,?)");
-            pre.setString(1, Customerid);
-            pre.setString(2,FirstName);
-            pre.setString(3,LastName);
-            pre.setString(4,Passport);
-            pre.setString(5,NationalID);
-            pre.setString(6,Address);
-            pre.setString(7,Contact);
-            pre.setString(8,Gender);
-            pre.setString(9,Date);
-            
-            pre.executeUpdate();
-            
-            JOptionPane.showMessageDialog(this, "Customer Added Succesfully");
-            this.dispose();
-            
-            
-            
-            
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(AddCustomer.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            String Date = da.format(SelectedDate);
+            try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project", "root", "Ab9797@bhoir");
+                PreparedStatement pre = con.prepareStatement("INSERT INTO customer (CustomerId, FirstName, LastName, Passport, NationalID, Address, Contact, Gender, DOB) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+//                Connection con = null;
+//                PreparedStatement pre = null;
+//                Class.forName("com.mysql.jdbc.Driver");
+//                con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
+//                pre = con.prepareStatement("insert into customer(CustomerId,FirstName,LastName,Passport,NationalID,Address,Contact,Gender,DOB)values(?,?,?,?,?,?,?,?,?)");
+                pre.setString(1, Customerid);
+                pre.setString(2,FirstName);
+                pre.setString(3,LastName);
+                pre.setString(4,Passport);
+                pre.setString(5,NationalID);
+                pre.setString(6,Address);
+                pre.setString(7,Contact);
+                pre.setString(8,Gender);
+                pre.setString(9,Date);
+
+                pre.executeUpdate();
+
+                JOptionPane.showMessageDialog(this, "Customer Added Succesfully");
+                this.dispose();
+            } catch ( SQLException ex) {
+                Logger.getLogger(AddCustomer.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Database error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                
+            }
             
     }//GEN-LAST:event_jButton1ActionPerformed
 

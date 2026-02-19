@@ -5,6 +5,8 @@
 package com.mycompany.airport_reservation_system;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,11 +22,37 @@ import javax.swing.JOptionPane;
  * @author ADITYA
  */
 public class CancleTicket extends javax.swing.JInternalFrame {
+    
+    
+    class BackgroundPanel extends javax.swing.JPanel {
+        public Image backgroundImage;
 
-    /**
-     * Creates new form CancleTicket
-     */
+        public BackgroundPanel() {
+            backgroundImage = new ImageIcon(
+                    "C:\\Users\\ADITYA\\OneDrive\\Desktop\\images\\cancle.jpg"
+            ).getImage();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
+
+    
+    private static final String STATUS_CANCELLED = "Cancelled";
+    private static final String SUCCESS_SEARCH_MESSAGE = "Ticket details retrieved successfully.";
+    private static final String FAILURE_SEARCH_MESSAGE = "Ticket not found or invalid.";
+    private static final String SUCCESS_CANCEL_MESSAGE = "Ticket Has Been Cancelled!";
+    private static final String FAILURE_CANCEL_MESSAGE = "Ticket Has NOT Been Cancelled!";
+    private static final String INVALID_ID_MESSAGE = "Please enter a valid alphanumeric Ticket ID.";
+    private static final String ERROR_MESSAGE = "An error occurred. Please try again.";
+    private static final String VERIFICATION_FAILED_MESSAGE = "Ticket verification failed: Invalid or missing data.";
+    private static final String ALREADY_CANCELLED_MESSAGE = "Ticket is already cancelled.";
+    
     public CancleTicket() {
+        setContentPane(new CancleTicket.BackgroundPanel());
         initComponents();
         ticketId.setPreferredSize(new Dimension(100, 50));
 
@@ -59,6 +88,8 @@ public class CancleTicket extends javax.swing.JInternalFrame {
         contact = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
 
+        setClosable(true);
+
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Ticket Id");
@@ -76,58 +107,46 @@ public class CancleTicket extends javax.swing.JInternalFrame {
             }
         });
 
+        jPanel1.setOpaque(false);
+
         jLabel2.setFont(new java.awt.Font("Leelawadee UI", 2, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Thanks for Chosing AccioJob Airline");
+        jLabel2.setText("Thanks for Chosing World Airline");
 
         jLabel3.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("First Name");
 
         jLabel4.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Last Name");
 
         jLabel5.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Gender");
 
         jLabel6.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Arrival");
 
         jLabel7.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Departure");
 
         jLabel8.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Contact No");
 
         jLabel9.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Flight Name");
 
         firstName.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
-        firstName.setForeground(new java.awt.Color(255, 255, 255));
 
         lastName.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
-        lastName.setForeground(new java.awt.Color(255, 255, 255));
 
         gender.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
-        gender.setForeground(new java.awt.Color(255, 255, 255));
 
         flightName.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
-        flightName.setForeground(new java.awt.Color(255, 255, 255));
 
         arrival.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
-        arrival.setForeground(new java.awt.Color(255, 255, 255));
 
         departure.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
-        departure.setForeground(new java.awt.Color(255, 255, 255));
 
         contact.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
-        contact.setForeground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -210,7 +229,6 @@ public class CancleTicket extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jButton1)
@@ -248,73 +266,116 @@ public class CancleTicket extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_ticketIdActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String ticketIdText = ticketId.getText().trim();
+        
+        if (ticketIdText.isEmpty() || !ticketIdText.matches("[A-Za-z0-9]+")) {
+            JOptionPane.showMessageDialog(null, INVALID_ID_MESSAGE);
+            return;
+        }
+        
+        String query = "select ticket.FirstName,ticket.LastName,ticket.Gender,Flight.FlightName,ticket.Arrival,ticket.Departure,ticket.Contact from ticket"
+                + " INNER JOIN flight"
+                + " ON flight.FlightID = ticket.FlightID"
+                + " where TicketId=? ";
+      
         try {
-            // TODO add your handling code here:
-            String Ticket = ticketId.getText();
-            String query = "select ticket.FirstName,ticket.LastName,ticket.Gender,Flight.FlightName,ticket.Arrival,ticket.Departure,ticket.Contact from ticket"
-            + " INNER JOIN flight"
-            + " ON flight.FlightID = ticket.FlightID"
-            + " where TicketId=? ";
-
-            Connection con;
-            PreparedStatement pre1;
-
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-
-            pre1 = con.prepareStatement(query);
-
-            pre1.setString(1,Ticket);
-
-            ResultSet rs = pre1.executeQuery();
-
-            if(rs.next() != false)
-            {
-                firstName.setText(rs.getString("FirstName"));
-                lastName.setText(rs.getString("LastName"));
-                gender.setText(rs.getString("Gender"));
-                flightName.setText(rs.getString("FlightName"));
-                arrival.setText(rs.getString("Arrival"));
-                departure.setText(rs.getString("Departure"));
-                contact.setText(rs.getString("Contact"));
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
+                 PreparedStatement pre1 = con.prepareStatement(query)) {
+                
+                pre1.setString(1, ticketIdText);
+                
+                try (ResultSet rs = pre1.executeQuery()) {
+                    if (rs.next()) {
+                        // Verify: Ensure retrieved data is not null/empty
+                        String first = rs.getString("FirstName");
+                        String last = rs.getString("LastName");
+                        String gen = rs.getString("Gender");
+                        String flight = rs.getString("FlightName");
+                        String arr = rs.getString("Arrival");
+                        String dep = rs.getString("Departure");
+                        String cont = rs.getString("Contact");
+                        
+                        if (first == null || last == null || gen == null || flight == null || arr == null || dep == null || cont == null ||
+                            first.trim().isEmpty() || last.trim().isEmpty() || gen.trim().isEmpty() || flight.trim().isEmpty() ||
+                            arr.trim().isEmpty() || dep.trim().isEmpty() || cont.trim().isEmpty()) {
+                            JOptionPane.showMessageDialog(null, VERIFICATION_FAILED_MESSAGE);
+                            return;
+                        }
+                        
+                        firstName.setText(first);
+                        lastName.setText(last);
+                        gender.setText(gen);
+                        flightName.setText(flight);
+                        arrival.setText(arr);
+                        departure.setText(dep);
+                        contact.setText(cont);
+                        JOptionPane.showMessageDialog(null, SUCCESS_SEARCH_MESSAGE);
+                    } else {
+                        // Clear labels on failure
+                        firstName.setText("");
+                        lastName.setText("");
+                        gender.setText("");
+                        flightName.setText("");
+                        arrival.setText("");
+                        departure.setText("");
+                        contact.setText("");
+                        JOptionPane.showMessageDialog(null, FAILURE_SEARCH_MESSAGE);
+                    }
+                }
             }
-
         } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(GetTicket.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CancleTicket.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        try {
-            String Ticket  = ticketId.getText();
-            String Status = "Cancelled";
-            String query ="UPDATE ticket"
-                    + " SET Status = ? "
-                    + " where TicketID = ? ";
-            
-            Connection con;
-            PreparedStatement pre;
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-            pre = con.prepareStatement(query);
-            pre.setString(1,Status);
-            pre.setString(2,Ticket);
-            int row = pre.executeUpdate();
-            
-            if(row>0){
-                JOptionPane.showMessageDialog(this, "Ticket Has Been Cancelled!");
-                this.dispose();
+        String ticket = ticketId.getText().trim();  // Trim for consistency
+    if (ticket.isEmpty()) {
+        JOptionPane.showMessageDialog(this, INVALID_ID_MESSAGE);
+        return;
+    }
+    
+    // First, check status
+    String checkQuery = "SELECT Status FROM ticket WHERE TicketID = ?";
+    String updateQuery = "UPDATE ticket SET Status = ? WHERE TicketID = ? AND Status != ?";
+    
+    try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project?useSSL=true", "root", "Ab9797@bhoir");
+         PreparedStatement checkPre = con.prepareStatement(checkQuery);
+         PreparedStatement updatePre = con.prepareStatement(updateQuery)) {
+        
+        checkPre.setString(1, ticket);
+        try (ResultSet rs = checkPre.executeQuery()) {
+            if (rs.next()) {
+                String currentStatus = rs.getString("Status");
+                if ("Cancelled".equals(currentStatus)) {
+                    JOptionPane.showMessageDialog(this, ALREADY_CANCELLED_MESSAGE);
+                    return;
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, FAILURE_SEARCH_MESSAGE);
+                return;
             }
-            else{
-                JOptionPane.showMessageDialog(this, "Ticket Has NOT Been Cancelled!");
-            }
-            
-            
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(BookTicket.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        updatePre.setString(1, STATUS_CANCELLED);
+        updatePre.setString(2, ticket);
+        updatePre.setString(3, STATUS_CANCELLED);  // Prevent double-cancel
+        int row = updatePre.executeUpdate();
+        
+        if (row > 0) {
+            JOptionPane.showMessageDialog(this, SUCCESS_CANCEL_MESSAGE);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, FAILURE_CANCEL_MESSAGE);
+        }
+    } catch (SQLException ex) {
+        Logger.getLogger(CancleTicket.class.getName()).log(Level.SEVERE, null, ex);
+        JOptionPane.showMessageDialog(this, ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_jButton2ActionPerformed
 
 

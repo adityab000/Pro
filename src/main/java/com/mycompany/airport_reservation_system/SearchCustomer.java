@@ -386,7 +386,7 @@ public class SearchCustomer extends javax.swing.JInternalFrame {
         try {
             // TODO add your handling code here:
             
-            String Customer = custid.getText();
+            String Customer = custid.getText().trim();
             
             
             Connection con;

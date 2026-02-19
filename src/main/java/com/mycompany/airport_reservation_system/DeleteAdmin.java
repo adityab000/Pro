@@ -4,6 +4,8 @@
  */
 package com.mycompany.airport_reservation_system;
 
+import java.awt.Graphics;
+import java.awt.Image;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,19 +13,51 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 
 /**
  *
  * @author ADITYA
  */
 public class DeleteAdmin extends javax.swing.JInternalFrame {
+    
 
     /**
      * Creates new form DeleteAdmin
      */
+    class BackgroundPanel extends javax.swing.JPanel {
+        public Image backgroundImage;
+
+        public BackgroundPanel() {
+            backgroundImage = new ImageIcon(
+                    "C:\\Users\\ADITYA\\OneDrive\\Desktop\\images\\delete.jpg"
+            ).getImage();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
+    
     public DeleteAdmin() {
+        setContentPane(new DeleteAdmin.BackgroundPanel());
         initComponents();
+        UserId.setToolTipText("Enter a valid ID (e.g., 123 or ADM001 if string-based)");
+    }
+    
+
+    
+    private boolean validateInput(String id) {
+        if (id == null || id.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "ID cannot be empty!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        
+        return true;
     }
 
     /**
@@ -49,22 +83,21 @@ public class DeleteAdmin extends javax.swing.JInternalFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
+        setClosable(true);
+
         jPanel1.setBackground(new java.awt.Color(0, 51, 204));
+        jPanel1.setOpaque(false);
 
         jLabel2.setFont(new java.awt.Font("Leelawadee UI", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("ID");
 
         jLabel3.setFont(new java.awt.Font("Leelawadee UI", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Role");
 
         jLabel5.setFont(new java.awt.Font("Leelawadee UI", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Username");
 
         jLabel6.setFont(new java.awt.Font("Leelawadee UI", 1, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText(" Password");
 
         jButton1.setText("Search");
@@ -124,6 +157,7 @@ public class DeleteAdmin extends javax.swing.JInternalFrame {
         );
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("welcome to the Access Delete panal");
 
         jButton2.setText("Delete");
@@ -171,56 +205,99 @@ public class DeleteAdmin extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
+        String id = UserId.getText().trim();
+        if (!validateInput(id)){ 
+            clearFields();
+            return;
+        }
+
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
+                     PreparedStatement pre = con.prepareStatement("SELECT userName, role FROM login WHERE ID = ?")) {
+                    pre.setString(1, id);
+                    try (ResultSet rs = pre.executeQuery()) {
+                        if (rs.next()) {
+                            userName.setText(rs.getString("userName"));
+                            role.setText(rs.getString("role"));
+                            
+                            password.setText("");
+                        } else {
+                            JOptionPane.showMessageDialog(DeleteAdmin.this, "User not found!", "Info", JOptionPane.INFORMATION_MESSAGE);
+                            clearFields();
+                        }
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(DeleteAdmin.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(DeleteAdmin.this, "Database error during search!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                return null;
+            }
+        };
+        worker.execute();
         
-        try {
-            
-        String ID = UserId.getText();
-        Connection con;
-        PreparedStatement pre;
-        Class.forName("com.mysql.jdbc.Driver");
-        con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-        pre = con.prepareStatement("select * from login where ID=?");
-        pre.setString(1,ID);
-            
-        ResultSet rs = pre.executeQuery();
-        if(rs.next() != false){
-            userName.setText(rs.getString("userName"));
-            password.setText(rs.getString("password"));
-            role.setText(rs.getString("role"));
-            
-        }
-            
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(GetTicket.class.getName()).log(Level.SEVERE, null, ex);
-        }
            
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try {
-            String ID = UserId.getText();
-            Connection con;
-            PreparedStatement pre;
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-            pre = con.prepareStatement("DELETE FROM login where ID=?");
-            pre.setString(1, ID);
-            
-           int row = pre.executeUpdate();
-           if(row>0){
-               JOptionPane.showMessageDialog(this, "User Is Deleted!");
-               this.dispose();
-           }
-           else{
-               JOptionPane.showMessageDialog(this, "User Is Not Deleted!");
-           }
-           
-        } catch (ClassNotFoundException | SQLException ex) {
-            Logger.getLogger(DeleteAdmin.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        String id = UserId.getText().trim();
+        if (!validateInput(id)) return;
+        
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this user? This action cannot be undone.", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+        if (confirm != JOptionPane.YES_OPTION) return;
+          SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
+                     PreparedStatement pre = con.prepareStatement("DELETE FROM login WHERE ID = ?")) {
+                    pre.setString(1, id);  // Parameterized as int
+                    int rowsAffected = pre.executeUpdate();
+                    if (rowsAffected > 0) {
+                        JOptionPane.showMessageDialog(DeleteAdmin.this, "User deleted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        clearFields();
+                        DeleteAdmin.this.dispose();  // Close the form
+                    } else {
+                        JOptionPane.showMessageDialog(DeleteAdmin.this, "User not found or already deleted!", "Info", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(DeleteAdmin.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(DeleteAdmin.this, "Database error during delete!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                return null;
+            }
+        };
+        worker.execute();
+//        try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
+//            PreparedStatement pre = con.prepareStatement("DELETE FROM login where ID=?");) {
+//            
+//            Class.forName("com.mysql.jdbc.Driver");
+//            
+//            pre.setString(1, ID);
+//            
+//           int row = pre.executeUpdate();
+//           if(row>0){
+//               JOptionPane.showMessageDialog(this, "User Is Deleted!");
+//               this.dispose();
+//           }
+//           else{
+//               JOptionPane.showMessageDialog(this, "User Is Not Deleted!");
+//           }
+//           
+//        } catch (ClassNotFoundException | SQLException ex) {
+//            Logger.getLogger(DeleteAdmin.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+        private void clearFields() {
+        userName.setText("");
+        password.setText("");
+        role.setText("");
+    }
 
+    
+
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField UserId;
     private javax.swing.JButton jButton1;

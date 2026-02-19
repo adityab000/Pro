@@ -4,13 +4,17 @@
  */
 package com.mycompany.airport_reservation_system;
 
+import java.awt.Graphics;
+import java.awt.Image;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,12 +22,109 @@ import javax.swing.JOptionPane;
  * @author ADITYA
  */
 public class DeleteFlight extends javax.swing.JInternalFrame {
+    
 
     /**
      * Creates new form DeleteFlight
      */
+    
+    class BackgroundPanel extends javax.swing.JPanel {
+        public Image backgroundImage;
+
+        public BackgroundPanel() {
+            backgroundImage = new ImageIcon(
+                    "C:\\Users\\ADITYA\\OneDrive\\Desktop\\images\\delete.jpg"
+            ).getImage();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
+    
     public DeleteFlight() {
+        setContentPane(new DeleteFlight.BackgroundPanel());
         initComponents();
+    }
+    
+    private boolean validateInputs() {
+       
+        if (flightid.getText().trim().isEmpty() || flightName.getText().trim().isEmpty() ||
+            arrival.getText().trim().isEmpty() || departure.getText().trim().isEmpty() ||
+            duration.getText().trim().isEmpty() || seats.getText().trim().isEmpty() ||
+            fare.getText().trim().isEmpty() || date.getText() == null) {
+            JOptionPane.showMessageDialog(null, "All fields must be filled!");
+            return false;
+        }
+        
+        
+    
+        try {
+            int seatCount = Integer.parseInt(seats.getText().trim());
+            double fareAmount = Double.parseDouble(fare.getText().trim());
+            if (seatCount <= 0 || fareAmount <= 0) {
+                JOptionPane.showMessageDialog(null, "Seats and Fare must be positive numbers!");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Seats and Fare must be valid numbers!");
+            return false;
+        }
+        
+        String arrivalText = arrival.getText().trim();
+        String departureText = departure.getText().trim();
+        String flightnamecheck = flightName.getText().trim();
+        if (!arrivalText.matches("^[A-Z][a-z]*$")) {
+            JOptionPane.showMessageDialog(null, "Arrival must start with a capital letter and contain only lowercase letters after (e.g., 'Delhi'). No numbers or special characters!");
+            return false;
+        }
+        if (!departureText.matches("^[A-Z][a-z]*$")) {
+            JOptionPane.showMessageDialog(null, "Departure must start with a capital letter and contain only lowercase letters after (e.g., 'Mumbai'). No numbers or special characters!");
+            return false;
+        }
+        if (!flightnamecheck.matches("^[A-Z][a-z]*$")) {
+            JOptionPane.showMessageDialog(null, "Flight Name must start with a capital letter and contain only lowercase letters after (e.g., 'Airindia'). No numbers or special characters!");
+            return false;
+        }
+        
+        String durationText = duration.getText().trim();
+        if (durationText.matches("^\\d{2}$")) {
+            // Exactly two digits: Accept as-is (e.g., "12")
+            if ("00".equals(durationText)) {
+            JOptionPane.showMessageDialog(null, "Duration cannot be zero (e.g., '0', '00', or '00:00'). Please enter a valid duration.");
+            return false;
+        } else{
+            duration.setText(durationText +":00");
+            }
+        } else if (durationText.matches("^\\d{2}:\\d{2}$")) {
+            // "HH:MM" format: Accept as-is (e.g., "12:30")
+            if ("00:00".equals(durationText)) {
+            JOptionPane.showMessageDialog(null, "Duration cannot be zero (e.g., '0', '00', or '00:00'). Please enter a valid duration.");
+            return false;
+        }
+            
+        } else if (durationText.matches("^\\d{1}$")) {
+            // Single digit: Pad with leading zero (e.g., "2" -> "02")
+            if ("0".equals(durationText)) {
+            JOptionPane.showMessageDialog(null, "Duration cannot be zero (e.g., '0', '00', or '00:00'). Please enter a valid duration.");
+            return false;
+        } else{
+            duration.setText("0" + durationText +":00");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Duration must be exactly two digits (e.g., '12') or in 'HH:MM' format (e.g., '12:30'). Single digits will be padded (e.g., '2' becomes '02'). No letters or extra characters!");
+            return false;
+        }
+    
+        if (arrival.getText().trim().equalsIgnoreCase(departure.getText().trim())) {
+            JOptionPane.showMessageDialog(null, "Arrival and Departure locations cannot be the same!");
+            return false;
+        }
+    
+
+        return true;
     }
 
     /**
@@ -58,6 +159,8 @@ public class DeleteFlight extends javax.swing.JInternalFrame {
         fare = new javax.swing.JTextField();
         date = new javax.swing.JTextField();
 
+        setClosable(true);
+
         jButton2.setText("delete");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -71,11 +174,13 @@ public class DeleteFlight extends javax.swing.JInternalFrame {
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 204));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel1.setOpaque(false);
 
         jLabel2.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setForeground(new java.awt.Color(51, 51, 51));
         jLabel2.setText("Flight ID");
 
+        flightid.setForeground(new java.awt.Color(51, 51, 51));
         flightid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 flightidActionPerformed(evt);
@@ -83,48 +188,53 @@ public class DeleteFlight extends javax.swing.JInternalFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setForeground(new java.awt.Color(51, 51, 51));
         jLabel3.setText("Flight Name");
 
         jLabel4.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setForeground(new java.awt.Color(51, 51, 51));
         jLabel4.setText("Arrival");
 
         jLabel7.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel6.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setForeground(new java.awt.Color(51, 51, 51));
         jLabel6.setText("Duration");
 
         jLabel5.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setForeground(new java.awt.Color(51, 51, 51));
         jLabel5.setText("Departure");
 
+        flightName.setForeground(new java.awt.Color(51, 51, 51));
         flightName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 flightNameActionPerformed(evt);
             }
         });
 
+        arrival.setForeground(new java.awt.Color(51, 51, 51));
         arrival.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 arrivalActionPerformed(evt);
             }
         });
 
+        departure.setForeground(new java.awt.Color(51, 51, 51));
         departure.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 departureActionPerformed(evt);
             }
         });
 
+        duration.setForeground(new java.awt.Color(51, 51, 51));
         duration.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 durationActionPerformed(evt);
             }
         });
 
+        jButton3.setForeground(new java.awt.Color(51, 51, 51));
         jButton3.setText("Search");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -189,9 +299,9 @@ public class DeleteFlight extends javax.swing.JInternalFrame {
 
         jPanel2.setBackground(new java.awt.Color(0, 51, 204));
         jPanel2.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel2.setOpaque(false);
 
         jLabel8.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Seats");
 
         seats.addActionListener(new java.awt.event.ActionListener() {
@@ -201,11 +311,9 @@ public class DeleteFlight extends javax.swing.JInternalFrame {
         });
 
         jLabel9.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Fare");
 
         jLabel11.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Date of Flight");
 
         fare.addActionListener(new java.awt.event.ActionListener() {
@@ -291,29 +399,47 @@ public class DeleteFlight extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try {
-            String ID = flightid.getText();
-            String Status = "Cancelled";
-            String query ="UPDATE flight"
+        if (!validateInputs()) {
+            return;
+        }
+        
+        String ID = flightid.getText().trim();
+        String Status = "Cancelled";
+        try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
+            PreparedStatement pre = con.prepareStatement("UPDATE flight"
                     + " SET Status = ? "
-                    + " where FlightID = ? ";
-            Connection con;
-            PreparedStatement pre;
+                    + " where FlightID = ? ");) {
+            
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-            pre = con.prepareStatement(query);
+            
             pre.setString(1,Status);
             pre.setString(2,ID);
             int row = pre.executeUpdate();
 
             if(row>0){
+               
                 JOptionPane.showMessageDialog(this, "Flight Has Been CanCelled!");
+                try( 
+                PreparedStatement ticketpre = con.prepareStatement( "UPDATE ticket"
+                    + " SET Status = ?"
+                    + " WHERE FlightID = ?" );) {
+                Class.forName("com.mysql.jdbc.Driver");
+                ticketpre.setString(1, Status);
+                ticketpre.setString(2, ID);
+                int Row = ticketpre.executeUpdate();
+                if(Row > 0){
+                    JOptionPane.showMessageDialog(this, "All tickets for this flight have been cancelled!");
+                }
+            }
                 this.dispose();
             }
             else{
                 JOptionPane.showMessageDialog(this, "Flight Has NOT Been Cancelled!");
             }
-        } catch (ClassNotFoundException | SQLException ex) {
+        }
+        
+        
+        catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DeleteFlight.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -347,26 +473,26 @@ public class DeleteFlight extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_fareActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        try {
+        String ID = flightid.getText();
+        try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
+            PreparedStatement pre = con.prepareStatement("select * from flight where FlightID=?");) {
             // TODO add your handling code here
-            String ID = flightid.getText();
-            Connection con;
-            PreparedStatement pre;
+           
+           
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
-            pre = con.prepareStatement("select * from flight where FlightID=?");
+            
             pre.setString(1,ID);
             
             ResultSet rs = pre.executeQuery();
             
             if(rs.next() != false){
-            flightName.setText(rs.getString("FlightName"));
-            arrival.setText(rs.getString("Arrival"));
-            departure.setText(rs.getString("Departure"));
-            duration.setText(rs.getString("Duration"));
-            seats.setText(rs.getString("Seats"));
-            fare.setText(rs.getString("Fare"));
-            date.setText(rs.getString("Date"));
+            flightName.setText(rs.getString("FlightName").trim());
+            arrival.setText(rs.getString("Arrival").trim());
+            departure.setText(rs.getString("Departure").trim());
+            duration.setText(rs.getString("Duration").trim());
+            seats.setText(rs.getString("Seats").trim());
+            fare.setText(rs.getString("Fare").trim());
+            date.setText(rs.getString("Date").trim());
 //            Status
             
         }
