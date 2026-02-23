@@ -47,6 +47,18 @@ public class DeleteAdmin extends javax.swing.JInternalFrame {
         setContentPane(new DeleteAdmin.BackgroundPanel());
         initComponents();
         UserId.setToolTipText("Enter a valid ID (e.g., 123 or ADM001 if string-based)");
+        
+        jPanel1 = AppTheme.replaceWithGlassPanel(this, jPanel1, 80, 20);
+        
+        AppTheme.styleTitle(jLabel1);           // "welcome to the Access Delete panel"
+        AppTheme.styleLabels(jLabel2, jLabel3, jLabel5, jLabel6);
+        
+        AppTheme.styleTextFields(UserId, userName, password, role);
+        AppTheme.stylePrimaryButton(jButton1);  // Search → blue
+        AppTheme.styleDangerButton(jButton2);   // Delete → red
+        AppTheme.styleDangerButton(jButton3); 
+        
+        
     }
     
 
@@ -168,6 +180,11 @@ public class DeleteAdmin extends javax.swing.JInternalFrame {
         });
 
         jButton3.setText("Cancle");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -288,6 +305,17 @@ public class DeleteAdmin extends javax.swing.JInternalFrame {
 //            Logger.getLogger(DeleteAdmin.class.getName()).log(Level.SEVERE, null, ex);
 //        }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        int choice = JOptionPane.showConfirmDialog(this,
+        "Are you sure you want to cancel admin page?",
+        "Confirm Cancel", JOptionPane.YES_NO_OPTION);
+
+    if (choice == JOptionPane.YES_OPTION) {
+        this.dispose();                    // ← close SignupFrame
+        
+    }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
         private void clearFields() {
         userName.setText("");

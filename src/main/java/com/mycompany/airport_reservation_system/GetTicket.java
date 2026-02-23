@@ -6,6 +6,8 @@ package com.mycompany.airport_reservation_system;
 
 import static java.awt.Color.blue;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -20,6 +23,22 @@ import javax.swing.JOptionPane;
  * @author ADITYA
  */
 public class GetTicket extends javax.swing.JInternalFrame {
+    
+    class BackgroundPanel extends javax.swing.JPanel {
+        public Image backgroundImage;
+
+        public BackgroundPanel() {
+            backgroundImage = new ImageIcon(
+                    "C:\\Users\\ADITYA\\OneDrive\\Desktop\\images\\ticket.jpg"
+            ).getImage();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
 
     private static final String STATUS_BOOKED = "Booked";
     private static final String SUCCESS_MESSAGE = "Ticket Has Been Generated Successfully";
@@ -29,9 +48,25 @@ public class GetTicket extends javax.swing.JInternalFrame {
     private static final String VERIFICATION_FAILED_MESSAGE = "Ticket verification failed: Invalid or missing data.";
 
     public GetTicket() {
+        setContentPane(new GetTicket.BackgroundPanel());
         initComponents();
         this.getContentPane().setBackground(blue);
         ticketId.setPreferredSize(new Dimension(100, 50));
+        
+        jPanel1 = AppTheme.replaceWithGlassPanel(this, jPanel1, 80, 20);
+        
+        AppTheme.styleTitle(jLabel2);
+        
+        AppTheme.styleLabel(jLabel1);
+        AppTheme.styleLabels(jLabel3, jLabel4, jLabel5,
+                         jLabel6, jLabel7, jLabel8, jLabel9);
+        
+        AppTheme.styleLabels(firstName, lastName, gender,
+                         flightName, arrival, departure, contact);
+        
+        AppTheme.styleTextField(ticketId);
+        
+        AppTheme.stylePrimaryButton(jButton1);
     }
 
     /**
@@ -87,9 +122,11 @@ public class GetTicket extends javax.swing.JInternalFrame {
             }
         });
 
+        jPanel1.setBackground(new java.awt.Color(0, 204, 204));
+
         jLabel2.setFont(new java.awt.Font("Leelawadee UI", 2, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Thanks for Chosing AccioJob Airline");
+        jLabel2.setText("Thanks for Chosing World Airline");
 
         jLabel3.setFont(new java.awt.Font("Leelawadee UI", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -145,10 +182,6 @@ public class GetTicket extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(8, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -174,6 +207,10 @@ public class GetTicket extends javax.swing.JInternalFrame {
                     .addComponent(departure, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(contact, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(8, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

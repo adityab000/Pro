@@ -28,6 +28,10 @@ public class TicketData extends javax.swing.JInternalFrame {
      */
     public TicketData() {
         initComponents();
+        
+        AppTheme.styleTable(table);
+        AppTheme.styleScrollPane(jScrollPane1);
+    
         AutoDATA();
     }
 

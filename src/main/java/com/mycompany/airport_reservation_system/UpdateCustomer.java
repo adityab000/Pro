@@ -4,6 +4,8 @@
  */
 package com.mycompany.airport_reservation_system;
 
+import java.awt.Graphics;
+import java.awt.Image;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,15 +24,51 @@ import javax.swing.JOptionPane;
  * @author ADITYA
  */
 public class UpdateCustomer extends javax.swing.JInternalFrame {
+    
+    class BackgroundPanel extends javax.swing.JPanel {
+        public Image backgroundImage;
+
+        public BackgroundPanel() {
+            backgroundImage = new ImageIcon(
+                    "C:\\Users\\ADITYA\\OneDrive\\Desktop\\images\\update.jpg"
+            ).getImage();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
 
     /**
      * Creates new form UpdateCustomer
      */
     public UpdateCustomer() {
+        setContentPane(new UpdateCustomer.BackgroundPanel());
         initComponents();
-            ButtonGroup genderGroup = new ButtonGroup();
-            genderGroup.add(male);
-            genderGroup.add(female);
+        
+        jPanel1 = AppTheme.replaceWithGlassPanel(this, jPanel1, 80, 20);
+        jPanel2 = AppTheme.replaceWithGlassPanel(this, jPanel2, 80, 20);
+        
+        AppTheme.styleTitle(jLabel1);           // "Customer Info Update Panel"
+        AppTheme.styleLabels(jLabel2, jLabel3, jLabel4, jLabel5,
+                         jLabel6, jLabel7, jLabel8, jLabel9, jLabel11);
+        
+        AppTheme.styleTextFields(custID, firstname, lastname,
+                             passport, nationalid, contact);
+
+        AppTheme.styleTextArea(address);
+        AppTheme.styleScrollPane(jScrollPane2);
+
+        AppTheme.styleRadioButtons(male, female);
+        
+        AppTheme.stylePrimaryButton(jButton1);  // Search → blue
+        AppTheme.styleSuccessButton(jButton2);
+    
+        ButtonGroup genderGroup = new ButtonGroup();
+        genderGroup.add(male);
+        genderGroup.add(female);
     }
 
     /**
@@ -67,6 +106,8 @@ public class UpdateCustomer extends javax.swing.JInternalFrame {
         address = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
 
+        setClosable(true);
+
         jButton2.setText("Update");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -76,9 +117,9 @@ public class UpdateCustomer extends javax.swing.JInternalFrame {
 
         jPanel2.setBackground(new java.awt.Color(0, 51, 204));
         jPanel2.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel2.setOpaque(false);
 
         jLabel8.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Contact");
 
         contact.addActionListener(new java.awt.event.ActionListener() {
@@ -88,14 +129,11 @@ public class UpdateCustomer extends javax.swing.JInternalFrame {
         });
 
         jLabel9.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Gender");
 
         jLabel11.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Date of Birth");
 
-        male.setForeground(new java.awt.Color(255, 255, 255));
         male.setText("Male");
         male.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -103,7 +141,6 @@ public class UpdateCustomer extends javax.swing.JInternalFrame {
             }
         });
 
-        female.setForeground(new java.awt.Color(255, 255, 255));
         female.setText("Female");
         female.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -166,9 +203,9 @@ public class UpdateCustomer extends javax.swing.JInternalFrame {
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 204));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel1.setOpaque(false);
 
         jLabel2.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Customer ID");
 
         custID.addActionListener(new java.awt.event.ActionListener() {
@@ -178,23 +215,18 @@ public class UpdateCustomer extends javax.swing.JInternalFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("First Name");
 
         jLabel4.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Last Name");
 
         jLabel5.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Passport No.");
 
         jLabel6.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("National ID");
 
         jLabel7.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Address");
 
         firstname.addActionListener(new java.awt.event.ActionListener() {

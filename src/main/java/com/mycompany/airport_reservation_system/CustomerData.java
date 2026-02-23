@@ -30,6 +30,10 @@ public class CustomerData extends javax.swing.JInternalFrame {
      */
     public CustomerData() {
         initComponents();
+        
+        AppTheme.styleTable(table);
+        AppTheme.styleScrollPane(jScrollPane1);
+    
         AutoDATA();
     }
     

@@ -56,6 +56,28 @@ public class CancleTicket extends javax.swing.JInternalFrame {
         initComponents();
         ticketId.setPreferredSize(new Dimension(100, 50));
 
+        // ── Replace panel with GlassPanel ───────────────────────
+        jPanel1 = AppTheme.replaceWithGlassPanel(this, jPanel1, 80, 20);
+
+        // ── Style title label ────────────────────────────────────
+        AppTheme.styleTitle(jLabel2);           // "Thanks for Choosing World Airline"
+
+        // ── Style field name labels ──────────────────────────────
+        AppTheme.styleLabels(jLabel1,           // Ticket Id
+                             jLabel3, jLabel4, jLabel5,
+                             jLabel6, jLabel7, jLabel8, jLabel9);
+
+        // ── Style value labels (display search results) ──────────
+        AppTheme.styleLabels(firstName, lastName, gender,
+                             flightName, arrival, departure, contact);
+
+        // ── Style text field ─────────────────────────────────────
+        AppTheme.styleTextField(ticketId);
+
+        // ── Style buttons ────────────────────────────────────────
+        AppTheme.stylePrimaryButton(jButton1);  // Search        → blue
+        AppTheme.styleDangerButton(jButton2);
+
     }
 
     /**
@@ -214,7 +236,7 @@ public class CancleTicket extends javax.swing.JInternalFrame {
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
-        jButton2.setText("Cancle");
+        jButton2.setText("Cancle Ticket");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);

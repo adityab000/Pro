@@ -51,6 +51,20 @@ public class AddCustomer extends javax.swing.JInternalFrame {
         setContentPane(new AddCustomer.BackgroundPanel());
         initComponents();
         this.getContentPane().setBackground(blue);
+        jPanel1 = AppTheme.replaceWithGlassPanel(this, jPanel1, 80, 20);
+        jPanel2 = AppTheme.replaceWithGlassPanel(this, jPanel2, 80, 20);
+        
+        AppTheme.styleTitle(jLabel1);
+        AppTheme.styleLabels(jLabel2, jLabel3, jLabel4, jLabel5,
+                             jLabel6, jLabel7, jLabel8, jLabel9, jLabel11);
+        AppTheme.styleTextFields(custID, firstname, lastname,
+                                 passport, nationalid, contact);
+        AppTheme.styleTextArea(address);
+        AppTheme.styleScrollPane(jScrollPane2);
+        AppTheme.styleRadioButtons(male, female);
+        AppTheme.stylePrimaryButton(jButton1);
+        AppTheme.styleDangerButton(cancel); 
+        
         AutoID();
         ButtonGroup genderGroup = new ButtonGroup();
         genderGroup.add(male);
@@ -120,7 +134,7 @@ public class AddCustomer extends javax.swing.JInternalFrame {
         jLabel11 = new javax.swing.JLabel();
         date = new com.toedter.calendar.JDateChooser();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        cancel = new javax.swing.JButton();
 
         jTextField5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -350,10 +364,10 @@ public class AddCustomer extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton2.setText("delete");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        cancel.setText("cancel");
+        cancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                cancelActionPerformed(evt);
             }
         });
 
@@ -374,7 +388,7 @@ public class AddCustomer extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addGap(86, 86, 86)
-                        .addComponent(jButton2)))
+                        .addComponent(cancel)))
                 .addContainerGap(93, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -390,7 +404,7 @@ public class AddCustomer extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton1)
-                            .addComponent(jButton2))))
+                            .addComponent(cancel))))
                 .addContainerGap(29, Short.MAX_VALUE))
         );
 
@@ -570,20 +584,27 @@ public class AddCustomer extends javax.swing.JInternalFrame {
             
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
+        int choice = JOptionPane.showConfirmDialog(this,
+        "Are you sure you want to cancel customer page?",
+        "Confirm Cancel", JOptionPane.YES_NO_OPTION);
+
+    if (choice == JOptionPane.YES_OPTION) {
+        this.dispose();                    // ← close SignupFrame
+        
+    }
+    }//GEN-LAST:event_cancelActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea address;
+    private javax.swing.JButton cancel;
     private javax.swing.JTextField contact;
     private javax.swing.JTextField custID;
     private com.toedter.calendar.JDateChooser date;
     private javax.swing.JRadioButton female;
     private javax.swing.JTextField firstname;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

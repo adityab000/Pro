@@ -48,6 +48,17 @@ public class AddFlight extends javax.swing.JInternalFrame {
     public AddFlight() {
         setContentPane(new AddFlight.BackgroundPanel());
         initComponents();
+        
+        jPanel1 = AppTheme.replaceWithGlassPanel(this, jPanel1, 80, 20);
+        jPanel2 = AppTheme.replaceWithGlassPanel(this, jPanel2, 80, 20);
+    
+        AppTheme.styleTitle(jLabel1);
+        AppTheme.styleLabels(jLabel2, jLabel3, jLabel4, jLabel5,
+                             jLabel6, jLabel8, jLabel9, jLabel11);
+        AppTheme.styleTextFields(flightid, flightName, arrival,
+                                 departure, duration, seats, fare);
+        AppTheme.stylePrimaryButton(jButton1);  // Add    → blue
+        AppTheme.styleDangerButton(jButton2);
         this.getContentPane().setBackground(blue);
         AutoID();
     }
@@ -414,7 +425,7 @@ public class AddFlight extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton2.setText("delete");
+        jButton2.setText("cancel");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -535,7 +546,14 @@ public class AddFlight extends javax.swing.JInternalFrame {
     }
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        int choice = JOptionPane.showConfirmDialog(this,
+        "Are you sure you want to cancel flight page?",
+        "Confirm Cancel", JOptionPane.YES_NO_OPTION);
+
+    if (choice == JOptionPane.YES_OPTION) {
+        this.dispose();                    // ← close SignupFrame
+        
+    }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void durationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_durationActionPerformed

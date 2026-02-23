@@ -47,6 +47,20 @@ public class DeleteFlight extends javax.swing.JInternalFrame {
     public DeleteFlight() {
         setContentPane(new DeleteFlight.BackgroundPanel());
         initComponents();
+        
+        jPanel1 = AppTheme.replaceWithGlassPanel(this, jPanel1, 80, 20);
+        jPanel2 = AppTheme.replaceWithGlassPanel(this, jPanel2, 80, 20);
+        
+        AppTheme.styleTitle(jLabel1);           // "Delete Flight Panel"
+        AppTheme.styleLabels(jLabel2, jLabel3, jLabel4, jLabel5,
+                         jLabel6, jLabel8, jLabel9, jLabel11);
+        
+        AppTheme.styleTextFields(flightid, flightName, arrival,
+                             departure, duration, seats,
+                             fare, date);
+        
+        AppTheme.stylePrimaryButton(jButton3);  // Search → blue
+        AppTheme.styleDangerButton(jButton2);
     }
     
     private boolean validateInputs() {

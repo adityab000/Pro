@@ -5,6 +5,8 @@
 package com.mycompany.airport_reservation_system;
 
 import static java.awt.Color.blue;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,15 +22,55 @@ import javax.swing.JOptionPane;
  * @author ADITYA
  */
 public class LoginFrame extends javax.swing.JFrame {
+    
+    private static final int MAX_LOGIN_ATTEMPTS = 3;
+    private static final int MIN_USERNAME_LENGTH = 3;
+    private static final int MAX_USERNAME_LENGTH = 20;
+    private static final int MIN_PASSWORD_LENGTH = 5;
+    
+    
+    private int loginAttempts = 0;
+    
+    class BackgroundPanel extends javax.swing.JPanel {
+        public Image backgroundImage;
+
+        public BackgroundPanel() {
+            backgroundImage = new ImageIcon(
+                    "C:\\Users\\ADITYA\\OneDrive\\Desktop\\images\\login.jpg"
+            ).getImage();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
 
     /**
      * Creates new form LoginFrame
      */
     public LoginFrame() {
+        setContentPane(new LoginFrame.BackgroundPanel());
         initComponents();
-        this.getContentPane().setBackground(blue);
+        
+        jPanel1 = AppTheme.replaceWithGlassPanel(this, jPanel1, 80, 20);
+        jPanel1.setOpaque(false);
+        
+        AppTheme.styleTitle(jLabel1);           // ← directly here
+        AppTheme.styleLabels(jLabel2, jLabel3);
+        AppTheme.styleTextField(username);
+        AppTheme.stylePasswordField(password);
+        AppTheme.stylePrimaryButton(jButton1);
+        AppTheme.styleSuccessButton(jButton2);
+        
+        setLocationRelativeTo(null);
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        revalidate();
+        repaint();
     }
-
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -36,7 +79,6 @@ public class LoginFrame extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -49,12 +91,13 @@ public class LoginFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 51, 204));
-        getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jLabel2.setFont(new java.awt.Font("Leelawadee UI", 3, 36)); // NOI18N
+        jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        jLabel2.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
         jLabel2.setText("USERNAME");
 
-        jLabel3.setFont(new java.awt.Font("Leelawadee UI", 3, 36)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
         jLabel3.setText("PASSWORD");
 
         username.addActionListener(new java.awt.event.ActionListener() {
@@ -68,80 +111,87 @@ public class LoginFrame extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(30, Short.MAX_VALUE)
+                .addContainerGap(20, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(username, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
                     .addComponent(password))
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(35, Short.MAX_VALUE)
+                .addContainerGap(38, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(8, 8, 8)
                         .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 5;
-        gridBagConstraints.ipadx = 28;
-        gridBagConstraints.ipady = 86;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(29, 154, 0, 193);
-        getContentPane().add(jPanel1, gridBagConstraints);
-
-        jLabel1.setFont(new java.awt.Font("Leelawadee UI", 1, 24)); // NOI18N
-        jLabel1.setText("Welcome to the Acciojob airways");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.ipadx = 8;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(67, 154, 0, 0);
-        getContentPane().add(jLabel1, gridBagConstraints);
+        jLabel1.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 24)); // NOI18N
+        jLabel1.setText("Welcome to the World airways");
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jButton1.setText("LOGIN");
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 203, 46, 0);
-        getContentPane().add(jButton1, gridBagConstraints);
 
         jButton2.setText("SignUp");
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.ipadx = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 203, 46, 0);
-        getContentPane().add(jButton2, gridBagConstraints);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(72, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(82, Short.MAX_VALUE))
+        );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton1, jButton2});
+
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(45, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jButton2});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -151,51 +201,103 @@ public class LoginFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_usernameActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+     if (loginAttempts >= MAX_LOGIN_ATTEMPTS) {
+            JOptionPane.showMessageDialog(this, 
+                "Maximum login attempts exceeded!\nPlease contact administrator or reset your password.",
+                "Account Locked", 
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        // Validate input fields
+        if (!validateInput()) {
+            return;
+        }
+        
         String UserName = username.getText().trim();
-            String Password = password.getText().trim();
+        char[] Pwd = password.getPassword();
+        String Password = new String(Pwd).trim();
+        
+        // Validate credentials format
+        if (!validateCredentialsFormat(UserName, Password)) {
+            return;
+        }
             
         try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");   
-            PreparedStatement pre = con.prepareStatement("select * from login where UserName=? and Password=?");) {
+            PreparedStatement pre = con.prepareStatement("select * from login where UserName=?");) {
             Class.forName("com.mysql.jdbc.Driver");
             
-            pre.setString(1,UserName);
-            pre.setString(2,Password);
+            pre.setString(1, UserName);
             
             ResultSet rs = pre.executeQuery();
             
-            if(rs.next())
-            {
-                String dbRole = rs.getString("Role");
-                JOptionPane.showMessageDialog( this," Login Succesfull! Role: " + dbRole);
-                this.dispose();
+            if (rs.next()) {
+                // Username exists, now check password
+                String storedPassword = rs.getString("Password");
                 
-                if("Admin".equalsIgnoreCase(dbRole))
-                {
-                    new Main().setVisible(true);
-                    this.dispose();
-                } else if("Customer".equalsIgnoreCase(dbRole))
-                {
-                    new Customer().setVisible(true);
-                    this.dispose();
-                } else{
-                    JOptionPane.showMessageDialog(this,"Login Failed: Role" + dbRole + " is not recognized. ");
+                if (Password.equals(storedPassword)) {
+                    // Password is correct
+                    String dbRole = rs.getString("Role");
+                    
+                    if (validateRole(dbRole)) {
+                        loginAttempts = 0; // Reset attempts on successful login
+                        JOptionPane.showMessageDialog(this, "Login Successful! Role: " + dbRole);
+                        this.dispose();
+                        
+                        if("Admin".equalsIgnoreCase(dbRole.trim())) {
+                            new Main().setVisible(true);
+                        } else if("Customer".equalsIgnoreCase(dbRole.trim())) {
+                            new Customer().setVisible(true);
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Login Failed: Role '" + dbRole + "' is not recognized.");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Login Failed: Invalid role in database.");
+                    }
+                } else {
+                    // Password is wrong
+                    loginAttempts++;
+                    int attemptsRemaining = MAX_LOGIN_ATTEMPTS - loginAttempts;
+                    
+                    if (attemptsRemaining > 0) {
+                        JOptionPane.showMessageDialog(this, 
+                            "Incorrect Password!\n" + attemptsRemaining + " attempt(s) remaining.",
+                            "Wrong Password", 
+                            JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(this, 
+                            "Incorrect Password!\nMaximum attempts exceeded. Account locked.",
+                            "Account Locked", 
+                            JOptionPane.ERROR_MESSAGE);
+                    }
+                    password.setText("");
+                    password.requestFocus();
                 }
+            } else {
+                // Username doesn't exist
+                loginAttempts++;
+                int attemptsRemaining = MAX_LOGIN_ATTEMPTS - loginAttempts;
                 
-                
-             }
-            
-//            if(rs.next() != false)
-//            {
-//                Main main = new Main();
-//                main.setVisible(true);
-//                this.setVisible(false);
-//            }else{
-//                JOptionPane.showMessageDialog(null,"Admin crenditials are wrong!");
-//            }
+                if (attemptsRemaining > 0) {
+                    JOptionPane.showMessageDialog(this, 
+                        "Username does not exist!\n" + attemptsRemaining + " attempt(s) remaining.",
+                        "Invalid Username", 
+                        JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, 
+                        "Username does not exist!\nMaximum attempts exceeded. Account locked.",
+                        "Account Locked", 
+                        JOptionPane.ERROR_MESSAGE);
+                }
+                username.setText("");
+                password.setText("");
+                username.requestFocus();
+            }
             
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(LoginFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            JOptionPane.showMessageDialog(this, "Database connection error: " + ex.getMessage());
+        }   
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -204,11 +306,83 @@ public class LoginFrame extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+   /**
+     * Validates input fields
+     * @return true if valid, false otherwise
+     */
+    
+    private boolean validateInput() {
+        String UserName = username.getText().trim();
+        char[] Pwd = password.getPassword();
+        String Password = new String(Pwd).trim();
+        
+        if (UserName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Username cannot be empty!");
+            username.requestFocus();
+            return false;
+        }
+        
+        if (Password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Password cannot be empty!");
+            password.requestFocus();
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private boolean validateCredentialsFormat(String username, String password) {
+        if (username.length() < MIN_USERNAME_LENGTH || username.length() > MAX_USERNAME_LENGTH) {
+            JOptionPane.showMessageDialog(this, "Username must be between " + MIN_USERNAME_LENGTH + "-" + MAX_USERNAME_LENGTH + " characters!");
+            return false;
+        }
+        
+        if (!username.matches("^[a-zA-Z0-9_]+$")) {
+            JOptionPane.showMessageDialog(this, "Username can only contain letters, numbers, and underscores!");
+            return false;
+        }
+        
+        // Password validation: at least 6 characters
+        if (password.length() < MIN_PASSWORD_LENGTH) {
+            JOptionPane.showMessageDialog(this, "Password must be at least " + MIN_PASSWORD_LENGTH + " characters long!");
+            return false;
+        }
+        
+        return true;
+    }
+    
     /**
+     * Validates the role from database
+     * @param role the role to validate
+     * @return true if role is valid, false otherwise
+     */
+    
+     private boolean validateRole(String role) {
+        if (role == null) {
+            return false;
+        }
+        
+        String normalizedRole = role.trim().toLowerCase();
+        return normalizedRole.equals("admin") || normalizedRole.equals("customer");
+    }
+    
+     /**
      * @param args the command line arguments
      */
+     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(LoginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 

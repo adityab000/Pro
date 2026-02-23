@@ -6,6 +6,8 @@ package com.mycompany.airport_reservation_system;
 
 
 
+import java.awt.Graphics;
+import java.awt.Image;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.logging.Level;
@@ -16,6 +18,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 
@@ -25,13 +28,48 @@ import javax.swing.JOptionPane;
  * @author ADITYA
  */
 public class Customer extends javax.swing.JFrame {
+    
+     class BackgroundPanel extends javax.swing.JPanel {
+        public Image backgroundImage;
+
+        public BackgroundPanel() {
+            backgroundImage = new ImageIcon(
+                    "C:\\Users\\ADITYA\\OneDrive\\Desktop\\images\\customer.jpg"
+            ).getImage();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
 
     /**
      * Creates new form Customer
      */
     public Customer() {
+        setContentPane(new Customer.BackgroundPanel());
         initComponents();
+        
+        jPanel1 = AppTheme.replaceWithGlassPanel(this, jPanel1, 80, 20);
+        jPanel2 = AppTheme.replaceWithGlassPanel(this, jPanel2, 80, 20);
+        
+        AppTheme.styleTitle(jLabel1);
+        AppTheme.styleLabels(jLabel2, jLabel3, jLabel4, jLabel5,
+                             jLabel6, jLabel7, jLabel8, jLabel9, jLabel11);
+        AppTheme.styleTextFields(custID, firstname, lastname,
+                                 passport, nationalid, contact);
+        AppTheme.styleTextArea(address);
+        AppTheme.styleScrollPane(jScrollPane2);
+        AppTheme.styleRadioButtons(male, female);
+        AppTheme.stylePrimaryButton(jButton1);
+        AppTheme.styleDangerButton(cancel); 
+        
+        setLocationRelativeTo(null);
+        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         AutoID();
+        
         ButtonGroup genderGroup = new ButtonGroup();
             genderGroup.add(male);
             genderGroup.add(female);
@@ -87,7 +125,7 @@ public class Customer extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         address = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        cancel = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         contact = new javax.swing.JTextField();
@@ -105,9 +143,9 @@ public class Customer extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 204));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel1.setOpaque(false);
 
         jLabel2.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Customer ID");
 
         custID.addActionListener(new java.awt.event.ActionListener() {
@@ -117,23 +155,18 @@ public class Customer extends javax.swing.JFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("First Name");
 
         jLabel4.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Last Name");
 
         jLabel5.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Passport No.");
 
         jLabel6.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("National ID");
 
         jLabel7.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Address");
 
         firstname.addActionListener(new java.awt.event.ActionListener() {
@@ -228,18 +261,18 @@ public class Customer extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("delete");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        cancel.setText("cancle");
+        cancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                cancelActionPerformed(evt);
             }
         });
 
         jPanel2.setBackground(new java.awt.Color(0, 51, 204));
         jPanel2.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel2.setOpaque(false);
 
         jLabel8.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Contact");
 
         contact.addActionListener(new java.awt.event.ActionListener() {
@@ -249,10 +282,8 @@ public class Customer extends javax.swing.JFrame {
         });
 
         jLabel9.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Gender");
 
-        male.setForeground(new java.awt.Color(255, 255, 255));
         male.setText("Male");
         male.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -260,7 +291,6 @@ public class Customer extends javax.swing.JFrame {
             }
         });
 
-        female.setForeground(new java.awt.Color(255, 255, 255));
         female.setText("Female");
         female.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -269,7 +299,6 @@ public class Customer extends javax.swing.JFrame {
         });
 
         jLabel11.setFont(new java.awt.Font("Leelawadee UI", 1, 12)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Date of Birth");
 
         date.setDateFormatString("yyyy-MM-dd");
@@ -333,7 +362,7 @@ public class Customer extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addGap(86, 86, 86)
-                        .addComponent(jButton2)))
+                        .addComponent(cancel)))
                 .addContainerGap(90, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -349,7 +378,7 @@ public class Customer extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton1)
-                            .addComponent(jButton2))))
+                            .addComponent(cancel))))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
@@ -514,9 +543,16 @@ public class Customer extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
+        int choice = JOptionPane.showConfirmDialog(this,
+        "Are you sure you want to cancel customer page?",
+        "Confirm Cancel", JOptionPane.YES_NO_OPTION);
+
+    if (choice == JOptionPane.YES_OPTION) {
+        this.dispose();                    // ← close SignupFrame
+        new LoginFrame().setVisible(true); // ← open LoginFrame
+    }
+    }//GEN-LAST:event_cancelActionPerformed
 
     private void contactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contactActionPerformed
         // TODO add your handling code here:
@@ -567,13 +603,13 @@ public class Customer extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea address;
+    private javax.swing.JButton cancel;
     private javax.swing.JTextField contact;
     private javax.swing.JTextField custID;
     private com.toedter.calendar.JDateChooser date;
     private javax.swing.JRadioButton female;
     private javax.swing.JTextField firstname;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;

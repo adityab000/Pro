@@ -43,6 +43,24 @@ public class DeleteCustomer extends javax.swing.JInternalFrame {
     public DeleteCustomer() {
         setContentPane(new DeleteCustomer.BackgroundPanel());
         initComponents();
+        
+        jPanel1 = AppTheme.replaceWithGlassPanel(this, jPanel1, 80, 20);
+        jPanel2 = AppTheme.replaceWithGlassPanel(this, jPanel2, 80, 20);
+        
+        AppTheme.styleTitle(jLabel1);           // "Customer Info Delete Panel"
+        AppTheme.styleLabels(jLabel2, jLabel3, jLabel4, jLabel5,
+                         jLabel6, jLabel7, jLabel8, jLabel9, jLabel11);
+        
+        AppTheme.styleTextFields(custID, firstname, lastname,
+                             passport, nationalid, contact,
+                             gender, date);
+        
+        AppTheme.styleTextArea(address);
+        AppTheme.styleScrollPane(jScrollPane2);
+        
+        AppTheme.stylePrimaryButton(jButton1);  // Search → blue
+        AppTheme.styleDangerButton(jButton2);
+
     }
 
     /**

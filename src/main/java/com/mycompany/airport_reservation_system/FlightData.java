@@ -28,6 +28,10 @@ public class FlightData extends javax.swing.JInternalFrame {
      */
     public FlightData() {
         initComponents();
+        
+        AppTheme.styleTable(table);
+        AppTheme.styleScrollPane(jScrollPane1);
+    
         AutoDATA();
     }
 
