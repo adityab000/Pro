@@ -248,7 +248,7 @@ public class LoginFrame extends javax.swing.JFrame {
                         
                         
                         if("Admin".equalsIgnoreCase(dbRole.trim())) {
-                            AppTheme.transition(this, () -> new Main(),       AppTheme.TransitionType.SLIDE_LEFT);
+                            AppTheme.transition(this, () -> new Digital(),       AppTheme.TransitionType.SLIDE_LEFT);
                         } else if("Customer".equalsIgnoreCase(dbRole.trim())) {
                             AppTheme.transition(this, () -> new Customer(),   AppTheme.TransitionType.SLIDE_LEFT);
                         } else {

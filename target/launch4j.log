@@ -1,0 +1,21 @@
+
+
+Version:	3.50
+CmdLine:	C:\Users\ADITYA\OneDrive\Documents\NetBeansProjects\airport_reservation_system\target\air.exe --l4j-debug
+JNI:		No
+WOW64:		Yes
+Working dir:	C:\Users\ADITYA\OneDrive\Documents\NetBeansProjects\airport_reservation_system\target\.
+Requires JDK:	No
+Requires 64-Bit: No
+Java min ver:	1.008.000
+Java max ver:	
+Substitute:	JAVA_HOME = C:\Program Files\Eclipse Adoptium\jdk-17.0.15.6-hotspot\
+Substitute:	PATH = C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files\Eclipse Adoptium\jdk-17.0.15.6-hotspot\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;C:\ProgramData\chocolatey\bin;C:\Program Files\nodejs\;C:\Program Files\MySQL\MySQL Server 8.0\bin;C:\Program Files\Git\cmd;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;C:\Users\ADITYA\AppData\Local\Programs\Python\Python313\Scripts\;C:\Users\ADITYA\AppData\Local\Programs\Python\Python313\;C:\Users\ADITYA\AppData\Local\Programs\Python\Launcher\;C:\Users\ADITYA\AppData\Local\Microsoft\WindowsApps;C:\Users\ADITYA\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\ADITYA\AppData\Local\Microsoft\WinGet\Packages\Schniz.fnm_Microsoft.Winget.Source_8wekyb3d8bbwe;C:\Users\ADITYA\AppData\Roaming\npm;C:\Users\ADITYA\AppData\Local\Programs\mongosh\;C:\Program Files\Eclipse Adoptium\jdk-17.0.15.6-hotspot\\bin
+JRE paths:	C:\Program Files\Eclipse Adoptium\jdk-17.0.15.6-hotspot\;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files\Eclipse Adoptium\jdk-17.0.15.6-hotspot\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;C:\ProgramData\chocolatey\bin;C:\Program Files\nodejs\;C:\Program Files\MySQL\MySQL Server 8.0\bin;C:\Program Files\Git\cmd;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;C:\Users\ADITYA\AppData\Local\Programs\Python\Python313\Scripts\;C:\Users\ADITYA\AppData\Local\Programs\Python\Python313\;C:\Users\ADITYA\AppData\Local\Programs\Python\Launcher\;C:\Users\ADITYA\AppData\Local\Microsoft\WindowsApps;C:\Users\ADITYA\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\ADITYA\AppData\Local\Microsoft\WinGet\Packages\Schniz.fnm_Microsoft.Winget.Source_8wekyb3d8bbwe;C:\Users\ADITYA\AppData\Roaming\npm;C:\Users\ADITYA\AppData\Local\Programs\mongosh\;C:\Program Files\Eclipse Adoptium\jdk-17.0.15.6-hotspot\\bin
+Check launcher:	C:\Program Files\Eclipse Adoptium\jdk-17.0.15.6-hotspot\bin\javaw.exe (OK)
+Version string: 1.017.000_015 / 64-Bit (OK)
+Heap -Xmx:	Requested 512 MB / 0%, Available: 4170 MB, Heap size: 512 MB
+Launcher:	C:\Program Files\Eclipse Adoptium\jdk-17.0.15.6-hotspot\bin\javaw.exe
+Launcher args:	-Xmx512m -jar "C:\Users\ADITYA\OneDrive\Documents\NetBeansProjects\airport_reservation_system\target\air.exe"
+Args length:	109/32768 chars
+Exit code:	0
