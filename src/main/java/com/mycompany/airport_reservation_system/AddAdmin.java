@@ -32,7 +32,7 @@ public class AddAdmin extends javax.swing.JInternalFrame {
 
         public BackgroundPanel() {
             backgroundImage = new ImageIcon(
-                    "C:\\Users\\ADITYA\\OneDrive\\Desktop\\images\\a1.jpg"
+                    getClass().getResource("/com/mycompany/airport_reservation_system/images/a1.jpg")
             ).getImage();
         }
 

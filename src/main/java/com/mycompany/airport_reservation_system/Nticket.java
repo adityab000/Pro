@@ -27,7 +27,7 @@ public class Nticket extends javax.swing.JFrame {
 
         public BackgroundPanel() {
             backgroundImage = new ImageIcon(
-                    "C:\\Users\\ADITYA\\OneDrive\\Desktop\\images\\ticket.jpg"
+                    getClass().getResource("/com/mycompany/airport_reservation_system/images/ticket.jpg")
             ).getImage();
         }
 

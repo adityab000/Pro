@@ -34,7 +34,7 @@ public class Customer extends javax.swing.JFrame {
 
         public BackgroundPanel() {
             backgroundImage = new ImageIcon(
-                    "C:\\Users\\ADITYA\\OneDrive\\Desktop\\images\\customer.jpg"
+                    getClass().getResource("/com/mycompany/airport_reservation_system/images/customer.jpg")
             ).getImage();
         }
 

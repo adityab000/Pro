@@ -29,7 +29,7 @@ public class CancleTicket extends javax.swing.JInternalFrame {
 
         public BackgroundPanel() {
             backgroundImage = new ImageIcon(
-                    "C:\\Users\\ADITYA\\OneDrive\\Desktop\\images\\cancle.jpg"
+                    getClass().getResource("/com/mycompany/airport_reservation_system/images/cancle.jpg")
             ).getImage();
         }
 

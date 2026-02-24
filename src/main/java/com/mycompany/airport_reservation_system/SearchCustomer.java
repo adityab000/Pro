@@ -29,7 +29,7 @@ public class SearchCustomer extends javax.swing.JInternalFrame {
 
         public BackgroundPanel() {
             backgroundImage = new ImageIcon(
-                    "C:\\Users\\ADITYA\\OneDrive\\Desktop\\images\\search.jpg"
+                    getClass().getResource("/com/mycompany/airport_reservation_system/images/search.jpg")
             ).getImage();
         }
 

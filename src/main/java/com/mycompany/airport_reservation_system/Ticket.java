@@ -32,7 +32,7 @@ public class Ticket extends javax.swing.JFrame {
 
         public BackgroundPanel() {
             backgroundImage = new ImageIcon(
-                    "C:\\Users\\ADITYA\\OneDrive\\Desktop\\images\\booking.jpg"
+                    getClass().getResource("/com/mycompany/airport_reservation_system/images/booking.jpg")
             ).getImage();
         }
 

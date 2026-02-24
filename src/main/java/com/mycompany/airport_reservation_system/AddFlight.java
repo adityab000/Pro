@@ -31,7 +31,7 @@ public class AddFlight extends javax.swing.JInternalFrame {
 
         public BackgroundPanel() {
             backgroundImage = new ImageIcon(
-                    "C:\\Users\\ADITYA\\OneDrive\\Desktop\\images\\customer.jpg"
+                    getClass().getResource("/com/mycompany/airport_reservation_system/images/flight.jpg")
             ).getImage();
         }
 

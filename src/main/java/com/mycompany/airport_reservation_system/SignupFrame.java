@@ -40,7 +40,7 @@ public class SignupFrame extends javax.swing.JFrame {
 
         public BackgroundPanel() {
             backgroundImage = new ImageIcon(
-                    "C:\\Users\\ADITYA\\OneDrive\\Desktop\\images\\sign.jpg"
+                    getClass().getResource("/com/mycompany/airport_reservation_system/images/sign.jpg")
             ).getImage();
         }
 

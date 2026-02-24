@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+
 /**
  *
  * @author ADITYA
@@ -36,7 +37,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
         public BackgroundPanel() {
             backgroundImage = new ImageIcon(
-                    "C:\\Users\\ADITYA\\OneDrive\\Desktop\\images\\login.jpg"
+                    getClass().getResource("/com/mycompany/airport_reservation_system/images/login.jpg")
             ).getImage();
         }
 
