@@ -499,7 +499,7 @@ public class BookTicket extends javax.swing.JInternalFrame {
         
         try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
             PreparedStatement pre = con.prepareStatement(query);) {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             
             pre.setString(1,Arrival);
             pre.setString(2,Departure);
@@ -555,7 +555,7 @@ public class BookTicket extends javax.swing.JInternalFrame {
         try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
             PreparedStatement pre = con.prepareStatement("select * from customer where CustomerID=?");) {
             // TODO add your handling code here:  
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             
             pre.setString(1,customerId);
             ResultSet rs = pre.executeQuery();
@@ -602,7 +602,7 @@ public class BookTicket extends javax.swing.JInternalFrame {
             flightID = (String) table.getModel().getValueAt(row, 0);
             try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");          
             PreparedStatement pre=con.prepareStatement("select fare from flight where FlightID=?");) {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             pre.setString(1,flightID);
             
             ResultSet rs = pre.executeQuery();
@@ -658,7 +658,7 @@ public class BookTicket extends javax.swing.JInternalFrame {
         try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
             PreparedStatement pre = con.prepareStatement("insert into ticket(TicketID,FlightID,CustomerID,Arrival,Departure,FirstName,LastName,Contact,Gender,Status)values(?,?,?,?,?,?,?,?,?,?)");) {
             // TODO add your handling code here
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             
 
             pre.setString(1, ID.getText());

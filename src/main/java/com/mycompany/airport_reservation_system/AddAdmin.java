@@ -66,7 +66,7 @@ public class AddAdmin extends javax.swing.JInternalFrame {
         try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
             PreparedStatement pre = con.prepareStatement("Select MAx(ID) from login");) {
             
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             ResultSet rs = pre.executeQuery();
             rs.next();
             String maxId = rs.getString("MAX(ID)");
@@ -276,7 +276,7 @@ public class AddAdmin extends javax.swing.JInternalFrame {
             PreparedStatement pre = con.prepareStatement("insert into login(ID,Username,Password,Role)values(?,?,?,?)");) {
             
 
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             
             
             pre.setString(1, id);

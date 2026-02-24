@@ -42,7 +42,7 @@ public class FlightData extends javax.swing.JInternalFrame {
             String query ="SELECT * FROM flight";
             Connection con;
             PreparedStatement pre;
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
             pre = con.prepareStatement(query);
             

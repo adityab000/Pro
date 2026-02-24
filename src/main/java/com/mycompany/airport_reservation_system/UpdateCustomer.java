@@ -521,7 +521,7 @@ public class UpdateCustomer extends javax.swing.JInternalFrame {
             String ID = custID.getText();
             Connection con;
             PreparedStatement pre;
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
             pre = con.prepareStatement("select * from customer where CustomerID=?");
             pre.setString(1,ID);

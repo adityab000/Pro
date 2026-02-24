@@ -424,7 +424,7 @@ public class DeleteFlight extends javax.swing.JInternalFrame {
                     + " SET Status = ? "
                     + " where FlightID = ? ");) {
             
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             
             pre.setString(1,Status);
             pre.setString(2,ID);
@@ -493,7 +493,7 @@ public class DeleteFlight extends javax.swing.JInternalFrame {
             // TODO add your handling code here
            
            
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             
             pre.setString(1,ID);
             

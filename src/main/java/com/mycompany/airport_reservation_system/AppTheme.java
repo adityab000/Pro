@@ -10,13 +10,17 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.geom.RoundRectangle2D;
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -31,6 +35,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
+import javax.swing.Timer;
 import javax.swing.border.Border;
 
 /**
@@ -38,6 +44,13 @@ import javax.swing.border.Border;
  * @author ADITYA
  */
 public class AppTheme {
+    
+    public enum TransitionType {
+        FADE,
+        SLIDE_LEFT,
+        SLIDE_RIGHT,
+        ZOOM_IN
+    }
     
     public static final Color PRIMARY     = new Color(30, 58, 138);
     public static final Color ACCENT      = new Color(59, 130, 246);
@@ -63,7 +76,202 @@ public class AppTheme {
         return BorderFactory.createEmptyBorder(8, 24, 8, 24);
     }
     
+    public static void addCustomTitleBar(JFrame frame) {
+    JPanel titleBar = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 5, 3));
+    titleBar.setBackground(PRIMARY);
+    titleBar.setPreferredSize(new Dimension(0, 35));
 
+    // ── Close button ─────────────────────────
+    JButton closeBtn = new JButton("✕");
+    closeBtn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+    closeBtn.setForeground(WHITE);
+    closeBtn.setBackground(DANGER);
+    closeBtn.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 10));
+    closeBtn.setFocusPainted(false);
+    closeBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    closeBtn.addActionListener(e -> System.exit(0));
+
+    // ── Minimize button ───────────────────────
+    JButton minBtn = new JButton("─");
+    minBtn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+    minBtn.setForeground(WHITE);
+    minBtn.setBackground(new Color(100, 100, 100));
+    minBtn.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 10));
+    minBtn.setFocusPainted(false);
+    minBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    minBtn.addActionListener(e -> frame.setState(JFrame.ICONIFIED));
+
+    // ── Maximize button ───────────────────────
+    JButton maxBtn = new JButton("□");
+    maxBtn.setFont(new Font("Segoe UI", Font.BOLD, 13));
+    maxBtn.setForeground(WHITE);
+    maxBtn.setBackground(new Color(100, 100, 100));
+    maxBtn.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 10));
+    maxBtn.setFocusPainted(false);
+    maxBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    maxBtn.addActionListener(e -> {
+        if (frame.getExtendedState() == JFrame.MAXIMIZED_BOTH) {
+            frame.setExtendedState(JFrame.NORMAL);
+        } else {
+            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
+    });
+
+    titleBar.add(minBtn);
+    titleBar.add(maxBtn);
+    titleBar.add(closeBtn);
+
+    frame.getContentPane().add(titleBar, BorderLayout.NORTH);
+}
+    
+public static void transition(JFrame fromFrame, java.util.function.Supplier<JFrame> toFrameSupplier, TransitionType type) {
+    fromFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+    SwingWorker<JFrame, Void> worker = new SwingWorker<>() {
+        protected JFrame doInBackground() {
+            return toFrameSupplier.get(); // ← builds frame in background
+        }
+
+        protected void done() {
+            try {
+                JFrame toFrame = get();
+                fromFrame.setCursor(Cursor.getDefaultCursor());
+                switch (type) {
+                    case FADE        -> slideTransition(fromFrame, toFrame, -1);
+                    case SLIDE_LEFT  -> slideTransition(fromFrame, toFrame, -1);
+                    case SLIDE_RIGHT -> slideTransition(fromFrame, toFrame,  1);
+                    case ZOOM_IN     -> slideTransition(fromFrame, toFrame, -1);
+                    default          -> slideTransition(fromFrame, toFrame, -1);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    };
+    worker.execute();
+}
+
+// ─── FADE ────────────────────────────────────────────────────────────────────
+
+private static void fadeTransition(JFrame fromFrame, JFrame toFrame) {
+    boolean supported = GraphicsEnvironment
+        .getLocalGraphicsEnvironment()
+        .getDefaultScreenDevice()
+        .isWindowTranslucencySupported(GraphicsDevice.WindowTranslucency.TRANSLUCENT);
+
+    if (!supported) {
+        toFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        toFrame.setVisible(true);
+        fromFrame.dispose();
+        return;
+    }
+
+    toFrame.dispose();
+    toFrame.setUndecorated(true);
+    toFrame.setOpacity(0f);
+    toFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    toFrame.setVisible(true);
+
+    // Fade out old frame
+    Timer fadeOut = new Timer(12, null);
+    float[] opacity = {1.0f};
+    fadeOut.addActionListener(e -> {
+        opacity[0] -= 0.06f;
+        if (opacity[0] <= 0f) {
+            fadeOut.stop();
+            fromFrame.dispose();
+
+            // Fade in new frame
+            Timer fadeIn = new Timer(12, null);
+            float[] op2 = {0f};
+            fadeIn.addActionListener(e2 -> {
+                op2[0] += 0.06f;
+                if (op2[0] >= 1f) {
+                    toFrame.setOpacity(1f);
+                    fadeIn.stop();
+                } else {
+                    toFrame.setOpacity(op2[0]);
+                }
+            });
+            fadeIn.start();
+        } else {
+            fromFrame.setOpacity(opacity[0]);
+        }
+    });
+    fadeOut.start();
+}
+
+// ─── SLIDE ───────────────────────────────────────────────────────────────────
+
+private static void slideTransition(JFrame fromFrame, JFrame toFrame, int direction) {
+    Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+    int screenW = screen.width;
+    int screenH = screen.height;
+
+    // Position toFrame just off-screen
+    toFrame.setSize(screenW, screenH);
+    toFrame.setLocation(direction * screenW, 0);
+    toFrame.setVisible(true);
+
+    int[] moved = {0};
+    int step = screenW / 15;
+
+    Timer slide = new Timer(12, null);
+    slide.addActionListener(e -> {
+        moved[0] += step;
+        int fromX = fromFrame.getX() - (direction * step);
+        int toX   = toFrame.getX()   - (direction * step);
+
+        fromFrame.setLocation(fromX, 0);
+        toFrame.setLocation(toX, 0);
+
+        if (moved[0] >= screenW) {
+            slide.stop();
+            fromFrame.dispose();
+            toFrame.setLocation(0, 0);
+            toFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
+    });
+    slide.start();
+}
+
+// ─── ZOOM IN ─────────────────────────────────────────────────────────────────
+
+private static void zoomTransition(JFrame fromFrame, JFrame toFrame) {
+    boolean supported = GraphicsEnvironment
+        .getLocalGraphicsEnvironment()
+        .getDefaultScreenDevice()
+        .isWindowTranslucencySupported(GraphicsDevice.WindowTranslucency.TRANSLUCENT);
+
+    if (!supported) {
+        toFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        toFrame.setVisible(true);
+        fromFrame.dispose();
+        return;
+    }
+    
+    toFrame.dispose();
+    toFrame.setUndecorated(true);
+
+    fromFrame.setOpacity(0f); // instantly hide source
+    toFrame.setOpacity(0f);
+    toFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    toFrame.setVisible(true);
+    fromFrame.dispose();
+
+    Timer zoom = new Timer(12, null);
+    float[] scale = {0f};
+    zoom.addActionListener(e -> {
+        scale[0] += 0.06f;
+        if (scale[0] >= 1f) {
+            toFrame.setOpacity(1f);
+            zoom.stop();
+        } else {
+            toFrame.setOpacity(scale[0]);
+        }
+    });
+    zoom.start();
+}
 
 public static void styleMenuBar(javax.swing.JMenuBar menuBar) {
     menuBar.setOpaque(false);

@@ -419,7 +419,7 @@ public class SearchCustomer extends javax.swing.JInternalFrame {
             
             Connection con;
             PreparedStatement pre;
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
             pre = con.prepareStatement("Select * from customer where CustomerID=?");
             pre.setString(1, Customer);

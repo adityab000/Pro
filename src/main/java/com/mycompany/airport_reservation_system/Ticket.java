@@ -47,6 +47,7 @@ public class Ticket extends javax.swing.JFrame {
      * Creates new form Ticket
      */
     public Ticket(String Customerid) {
+        
         setContentPane(new Ticket.BackgroundPanel());
         initComponents();
         
@@ -101,7 +102,7 @@ public class Ticket extends javax.swing.JFrame {
 
             Connection con;
             PreparedStatement pre;
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
             pre = con.prepareStatement("select * from customer where CustomerID=?");
             pre.setString(1,Customer);
@@ -129,7 +130,7 @@ public class Ticket extends javax.swing.JFrame {
         try {
             Connection con;
             PreparedStatement pre;
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
             pre = con.prepareStatement("Select Max(TicketID) from ticket");
             ResultSet rs = pre.executeQuery();
@@ -513,7 +514,7 @@ public class Ticket extends javax.swing.JFrame {
             flightID = table.getModel().getValueAt(row, col).toString();
             try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");          
             PreparedStatement pre=con.prepareStatement("select fare from flight where FlightID=?");) {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             pre.setString(1,flightID);
             
             ResultSet rs = pre.executeQuery();
@@ -554,7 +555,7 @@ public class Ticket extends javax.swing.JFrame {
             
             try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
             PreparedStatement pre = con.prepareStatement(query);) {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             
             pre.setString(1,Arrival);
             pre.setString(2,Departure);
@@ -649,7 +650,7 @@ public class Ticket extends javax.swing.JFrame {
         try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
             PreparedStatement pre = con.prepareStatement("insert into ticket(TicketID,FlightID,CustomerID,Arrival,Departure,FirstName,LastName,Contact,Gender,Status)values(?,?,?,?,?,?,?,?,?,?)");) {
             // TODO add your handling code here
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             
 
             pre.setString(1, ID.getText());
@@ -666,9 +667,7 @@ public class Ticket extends javax.swing.JFrame {
             
             if(row>0){
                 JOptionPane.showMessageDialog(this, "Flight Has Been Book Successfully");
-                this.dispose();
-                
-                new Nticket(TicketId).setVisible(true);
+                AppTheme.transition(this, () -> new Nticket(TicketId), AppTheme.TransitionType.SLIDE_LEFT);
                 
                 
             }
@@ -688,8 +687,7 @@ public class Ticket extends javax.swing.JFrame {
         "Confirm Cancel", JOptionPane.YES_NO_OPTION);
 
     if (choice == JOptionPane.YES_OPTION) {
-        this.dispose();                    // ← close SignupFrame
-         new Customer().setVisible(true);
+        AppTheme.transition(this, () -> new Customer(),        AppTheme.TransitionType.SLIDE_RIGHT);
     }
     }//GEN-LAST:event_jButton8ActionPerformed
 

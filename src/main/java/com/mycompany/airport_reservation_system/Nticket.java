@@ -46,6 +46,7 @@ public class Nticket extends javax.swing.JFrame {
     private static final String VERIFICATION_FAILED_MESSAGE = "Ticket verification failed: Invalid or missing data.";
 
     public Nticket(String TicketID) {
+         
         setContentPane(new Nticket.BackgroundPanel());
         initComponents();
         
@@ -61,6 +62,9 @@ public class Nticket extends javax.swing.JFrame {
                          flightName, arrival, departure, contact);
     
         AppTheme.styleTextField(ticketId);
+        
+        jButton1.setText("🏠 Home");          // ← rename button text
+        AppTheme.styleDangerButton(jButton1);
         
         setLocationRelativeTo(null);
         setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
@@ -169,6 +173,7 @@ public class Nticket extends javax.swing.JFrame {
         arrival = new javax.swing.JLabel();
         departure = new javax.swing.JLabel();
         contact = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -344,6 +349,13 @@ public class Nticket extends javax.swing.JFrame {
                 .addContainerGap(9, Short.MAX_VALUE))
         );
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -351,12 +363,16 @@ public class Nticket extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(36, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(36, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ticketId, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(36, Short.MAX_VALUE))
+                        .addComponent(ticketId, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -364,8 +380,9 @@ public class Nticket extends javax.swing.JFrame {
                 .addContainerGap(29, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ticketId, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(90, 90, 90)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(101, Short.MAX_VALUE))
         );
@@ -376,6 +393,10 @@ public class Nticket extends javax.swing.JFrame {
     private void ticketIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ticketIdActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ticketIdActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        AppTheme.transition(this, () -> new LoginFrame(), AppTheme.TransitionType.SLIDE_RIGHT);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -420,6 +441,7 @@ public class Nticket extends javax.swing.JFrame {
     private javax.swing.JLabel firstName;
     private javax.swing.JLabel flightName;
     private javax.swing.JLabel gender;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -479,8 +479,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-        this.dispose();
-        new LoginFrame().setVisible(true);
+        AppTheme.transition(this, () -> new LoginFrame(), AppTheme.TransitionType.SLIDE_RIGHT);
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     /**

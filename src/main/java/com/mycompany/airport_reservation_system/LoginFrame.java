@@ -51,8 +51,10 @@ public class LoginFrame extends javax.swing.JFrame {
      * Creates new form LoginFrame
      */
     public LoginFrame() {
+        
         setContentPane(new LoginFrame.BackgroundPanel());
         initComponents();
+        
         
         jPanel1 = AppTheme.replaceWithGlassPanel(this, jPanel1, 80, 20);
         jPanel1.setOpaque(false);
@@ -225,7 +227,7 @@ public class LoginFrame extends javax.swing.JFrame {
             
         try(Connection con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");   
             PreparedStatement pre = con.prepareStatement("select * from login where UserName=?");) {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             
             pre.setString(1, UserName);
             
@@ -242,12 +244,12 @@ public class LoginFrame extends javax.swing.JFrame {
                     if (validateRole(dbRole)) {
                         loginAttempts = 0; // Reset attempts on successful login
                         JOptionPane.showMessageDialog(this, "Login Successful! Role: " + dbRole);
-                        this.dispose();
+                        
                         
                         if("Admin".equalsIgnoreCase(dbRole.trim())) {
-                            new Main().setVisible(true);
+                            AppTheme.transition(this, () -> new Main(),       AppTheme.TransitionType.SLIDE_LEFT);
                         } else if("Customer".equalsIgnoreCase(dbRole.trim())) {
-                            new Customer().setVisible(true);
+                            AppTheme.transition(this, () -> new Customer(),   AppTheme.TransitionType.SLIDE_LEFT);
                         } else {
                             JOptionPane.showMessageDialog(this, "Login Failed: Role '" + dbRole + "' is not recognized.");
                         }
@@ -302,8 +304,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        new SignupFrame().setVisible(true);
-        this.dispose();
+        AppTheme.transition(this, () -> new SignupFrame(),AppTheme.TransitionType.SLIDE_LEFT);
     }//GEN-LAST:event_jButton2ActionPerformed
 
    /**

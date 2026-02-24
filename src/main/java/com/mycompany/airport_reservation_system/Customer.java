@@ -49,6 +49,7 @@ public class Customer extends javax.swing.JFrame {
      * Creates new form Customer
      */
     public Customer() {
+        
         setContentPane(new Customer.BackgroundPanel());
         initComponents();
         
@@ -68,11 +69,18 @@ public class Customer extends javax.swing.JFrame {
         
         setLocationRelativeTo(null);
         setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
-        AutoID();
+        
         
         ButtonGroup genderGroup = new ButtonGroup();
             genderGroup.add(male);
             genderGroup.add(female);
+            
+            addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowOpened(java.awt.event.WindowEvent e) {
+                AutoID();
+            }
+        });
     }
     
     public void AutoID()
@@ -80,7 +88,7 @@ public class Customer extends javax.swing.JFrame {
         try {
             Connection con;
             PreparedStatement pre;
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/Airline_Project","root","Ab9797@bhoir");
             pre = con.prepareStatement("Select Max(CustomerID) from customer");
             ResultSet rs = pre.executeQuery();
@@ -530,9 +538,8 @@ public class Customer extends javax.swing.JFrame {
 
             if(row>0){
                 JOptionPane.showMessageDialog(this,"Customer Added Succesfully");
-                this.dispose();
-               Ticket ticket = new Ticket(Customerid);
-               ticket.setVisible(true);
+                String cid = Customerid; // effectively final for lambda
+                AppTheme.transition(this, () -> new Ticket(cid), AppTheme.TransitionType.SLIDE_LEFT);
             }
 
         } catch ( SQLException ex) {
@@ -549,8 +556,8 @@ public class Customer extends javax.swing.JFrame {
         "Confirm Cancel", JOptionPane.YES_NO_OPTION);
 
     if (choice == JOptionPane.YES_OPTION) {
-        this.dispose();                    // ← close SignupFrame
-        new LoginFrame().setVisible(true); // ← open LoginFrame
+                            // ← close SignupFrame
+        AppTheme.transition(this, () -> new LoginFrame(), AppTheme.TransitionType.SLIDE_RIGHT);
     }
     }//GEN-LAST:event_cancelActionPerformed
 

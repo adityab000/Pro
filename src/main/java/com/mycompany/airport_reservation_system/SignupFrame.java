@@ -32,7 +32,7 @@ public class SignupFrame extends javax.swing.JFrame {
     private static final String DB_URL = "jdbc:mysql://localhost/Airline_Project";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "Ab9797@bhoir";
-    private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
+    private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
     
 
      class BackgroundPanel extends javax.swing.JPanel {
@@ -57,6 +57,7 @@ public class SignupFrame extends javax.swing.JFrame {
      * Creates new form SignupFrame
      */
     public SignupFrame() {
+        
         setContentPane(new SignupFrame.BackgroundPanel());
         initComponents();
         
@@ -382,8 +383,7 @@ public class SignupFrame extends javax.swing.JFrame {
                     "Registration Complete", JOptionPane.INFORMATION_MESSAGE);
 
                 clearFields();
-                this.dispose();
-                new LoginFrame().setVisible(true);
+                AppTheme.transition(this, () -> new LoginFrame(), AppTheme.TransitionType.SLIDE_RIGHT);
             } else {
                 JOptionPane.showMessageDialog(this,
                     "Sign Up Failed! Please try again.",
@@ -409,8 +409,7 @@ public class SignupFrame extends javax.swing.JFrame {
         "Confirm Cancel", JOptionPane.YES_NO_OPTION);
 
     if (choice == JOptionPane.YES_OPTION) {
-        this.dispose();                    // ← close SignupFrame
-        new LoginFrame().setVisible(true); // ← open LoginFrame
+        AppTheme.transition(this, () -> new LoginFrame(), AppTheme.TransitionType.SLIDE_RIGHT);
     }
     }//GEN-LAST:event_jButton2ActionPerformed
 
